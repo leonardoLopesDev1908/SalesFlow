@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: salesflow
+  datasource:
+    url: jdbc:postgresql://localhost:5432/salesflow
+    username: postgres
+    password: Cpp#1501
+    driver-class-name: org.postgresql.Driver
