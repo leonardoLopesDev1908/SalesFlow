@@ -13,12 +13,13 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-@Table
+@Table(name="clientes")
 @Entity
 @Data
 public class Cliente {
     
     @Id
+    @Column(name="id_cliente")
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 

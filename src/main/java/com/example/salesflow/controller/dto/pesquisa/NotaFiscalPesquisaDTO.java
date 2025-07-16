@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.example.salesflow.controller.dto.summary.ClienteSummaryDTO;
-import com.example.salesflow.controller.dto.summary.ProdutoSummaryDTO;
+import com.example.salesflow.controller.dto.summary.FornecedorSummaryDTO;
+import com.example.salesflow.model.ItemNotaFiscal;
 import com.example.salesflow.model.TransacaoType;
 
 public record NotaFiscalPesquisaDTO(
@@ -12,5 +13,6 @@ public record NotaFiscalPesquisaDTO(
     BigDecimal valorTotal,
     TransacaoType tipoTransacao,
     ClienteSummaryDTO cliente,
-    List<ProdutoSummaryDTO> produtos)   {
+    FornecedorSummaryDTO fornecedor,
+    List<ItemNotaFiscal> itens)   {
 }

@@ -14,6 +14,4 @@ public interface ClienteRepository extends JpaRepository<Cliente, UUID>{
     List<Cliente> findByNomeLike(String nome);
 
     Cliente findByCpf(String cpf);
-
-    
 }

@@ -13,7 +13,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-@Table
+@Table(name="fornecedores")
 @Entity
 @Data
 public class Fornecedor {
@@ -22,10 +22,10 @@ public class Fornecedor {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column
+    @Column(name="nome_fantasia")
     private String nomeFantasia;
 
-    @Column 
+    @Column(name="razao_social")
     private String razaoSocial;
 
     @Column 
@@ -41,5 +41,5 @@ public class Fornecedor {
     private String telefone;
 
     @OneToMany(mappedBy = "fornecedor", fetch = FetchType.LAZY)
-    private List<NotaFiscalRecebida> notasFiscais;
+    private List<NotaFiscal> notasFiscais;
 }

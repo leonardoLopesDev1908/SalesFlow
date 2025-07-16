@@ -17,6 +17,8 @@ public record FornecedorCadastroDTO(
                             @Email(message="Email inválido")
                             String email,
                             @NotBlank(message="Campo obrigatório")
+                            String endereco,
+                            @NotBlank(message="Campo obrigatório")
                             String telefone
                             ) {
     

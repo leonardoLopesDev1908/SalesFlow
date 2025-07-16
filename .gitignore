@@ -31,3 +31,56 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Arquivos de Build/Compilação (Maven, Gradle)
+/target/             # Ignora a pasta 'target' do Maven (classes compiladas, JARs, WARs)
+/build/              # Ignora a pasta 'build' do Gradle
+
+# Arquivos de IDEs
+.idea/               # Ignora pasta de configuração do IntelliJ IDEA
+.vscode/             # Ignora pasta de configuração do VS Code (se tiver configs pessoais ou muito grandes)
+*.iml                # Ignora arquivos de módulo do IntelliJ IDEA
+*.ipr
+*.iws
+.classpath           # Ignora arquivos do Eclipse
+.project
+.settings/           # Ignora pasta de configurações do Eclipse
+
+# Dependências (se não estiverem no repositório Maven local)
+/lib/                # Exemplo: se você tiver libs soltas aqui
+/vendor/             # Exemplo: se tiver libs de terceiros aqui
+
+# Arquivos de Log
+*.log                # Ignora todos os arquivos .log
+logs/                # Ignora a pasta 'logs'
+
+# Arquivos de Configuração de Ambiente (MUITO IMPORTANTE!)
+.env                 # Ignora um arquivo .env (com variáveis de ambiente locais)
+*.properties.bak     # Ignora backups de arquivos de propriedades
+*.yml.bak            # Ignora backups de arquivos YAML
+application-dev.properties # Se você não quer que o perfil dev suba, mas um genérico
+application-dev.yml
+
+# Arquivos do Sistema Operacional
+.DS_Store            # Ignora arquivos de metadados do macOS
+Thumbs.db            # Ignora arquivos de miniaturas do Windows
+
+# Arquivos de Pacotes/Caches
+*.jar                # Ignora todos os arquivos .jar
+*.war                # Ignora todos os arquivos .war
+*.zip
+*.tar
+*.gz
+*.rar
+/.mvn/wrapper/maven-wrapper.jar # Wrapper Maven, mas apenas o JAR, não os scripts
+
+# Se você tem frontend (ex: Node.js/npm) dentro do projeto
+/node_modules/       # Ignora a pasta node_modules
+npm-debug.log*
+
+# Arquivos de Teste específicos ou dumps
+*.hprof              # Dumps de memória da JVM
+*.class              # Classes compiladas (já coberto por /target/ ou /build/)
+
+# Arquivos gerados por IDEs para depuração
+hs_err_pid*.log
