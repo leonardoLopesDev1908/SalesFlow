@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.salesflow.model.Fornecedor;
 import com.example.salesflow.repository.FornecedorRepository;
+import com.example.salesflow.validator.FornecedorValidator;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,8 +17,10 @@ import lombok.RequiredArgsConstructor;
 public class FornecedorService {
     
     private final FornecedorRepository fornecedorRepository;
-
+    private final FornecedorValidator validator;
+    
     public Fornecedor salvar(Fornecedor fornecedor){
+        validator.validar(fornecedor);
         return fornecedorRepository.save(fornecedor);
     }
 

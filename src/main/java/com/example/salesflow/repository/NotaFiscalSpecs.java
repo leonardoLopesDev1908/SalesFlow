@@ -8,10 +8,10 @@ import java.util.List;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import jakarta.persistence.criteria.Predicate;
-
 import com.example.salesflow.model.NotaFiscal;
 import com.example.salesflow.model.TransacaoType;
+
+import jakarta.persistence.criteria.Predicate;
 
 public class NotaFiscalSpecs {
     

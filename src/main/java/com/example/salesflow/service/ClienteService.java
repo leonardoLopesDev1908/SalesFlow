@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.salesflow.model.Cliente;
 import com.example.salesflow.repository.ClienteRepository;
+import com.example.salesflow.validator.ClienteValidator;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,9 +17,10 @@ import lombok.RequiredArgsConstructor;
 public class ClienteService {
     
     private final ClienteRepository clienteRepository;
+    private final ClienteValidator validator;
 
     public Cliente salvar(Cliente cliente){
-        //validator.validar(cliente);
+        validator.validar(cliente);
         return clienteRepository.save(cliente);
     }
 
