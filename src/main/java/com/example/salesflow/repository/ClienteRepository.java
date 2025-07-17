@@ -1,6 +1,7 @@
 package com.example.salesflow.repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, UUID>{
     List<Cliente> findByNomeLike(String nome);
 
     Cliente findByCpf(String cpf);
+
+    Optional<Cliente> findByNomeAndCpf(String nome, String cpf);
 }

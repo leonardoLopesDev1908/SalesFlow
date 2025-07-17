@@ -1,6 +1,7 @@
 package com.example.salesflow.repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,4 +18,5 @@ public interface FornecedorRepository extends JpaRepository<Fornecedor, UUID>{
 
     Fornecedor findByCnpj(String cnpj);
 
+    Optional<Fornecedor> findByNomeFantasiaAndCnpj(String nomeFantasia, String cnpj);
 }
