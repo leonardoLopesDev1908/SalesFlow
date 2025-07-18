@@ -1,0 +1,165 @@
+/* ============================================== */
+/* 1. RESET / NORMALIZAÇÃO                       */
+/* Garante que os estilos padrão do navegador sejam consistentes */
+/* ============================================== */
+*, *::before, *::after {
+    box-sizing: border-box; /* Garante que padding e border não aumentem o tamanho final do elemento */
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px; /* Base para unidades rem */
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%; /* Evita que o texto aumente em celulares */
+}
+
+body {
+    font-family: 'Roboto', sans-serif; /* Fonte padrão, pode importar do Google Fonts */
+    color: var(--text-color-dark);
+    background-color: var(--background-color-light);
+    -webkit-font-smoothing: antialiased; /* Suaviza as fontes no Chrome/Safari */
+    -moz-osx-font-smoothing: grayscale; /* Suaviza as fontes no Firefox */
+    display: flex; /* Para o layout principal: sidebar + conteúdo */
+    min-height: 100vh; /* Garante que o body ocupe a altura total da viewport */
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+button, input, select, textarea {
+    font-family: inherit; /* Hereda a fonte do body */
+    font-size: 1rem;
+}
+
+/* ============================================== */
+/* 2. VARIÁVEIS CSS (TEMA)                        */
+/* Cores, fontes, espaçamentos - para consistência e facilidade de mudança */
+/* ============================================== */
+:root {
+    /* Cores Primárias */
+    --primary-color: #52ad52; /* Roxo vibrante (Ex: para botões, links) */
+    --primary-light: #5fe871;
+    --primary-dark: #336d33;
+
+    /* Cores Secundárias (Ex: para destaque, botões secundários) */
+    --secondary-color: #00bcd4; /* Azul ciano */
+    --secondary-light: #5edae6;
+    --secondary-dark: #008ba3;
+
+    /* Cores Neutras / de Texto */
+    --text-color-dark: #333;     /* Texto principal */
+    --text-color-light: #f4f4f4; /* Texto em fundos escuros */
+    --border-color: #ddd;      /* Bordas de cards, inputs */
+    --background-color-light: #f9f9f9; /* Fundo geral da aplicação */
+    --background-color-medium: #eee; /* Fundos para seções leves */
+    --background-color-dark: #2c3e50; /* Fundo para sidebar/header escuros */
+
+    /* Cores de Status */
+    --success-color: #28a745; /* Verde */
+    --warning-color: #ffc107; /* Amarelo */
+    --danger-color: #dc3545;  /* Vermelho */
+    --info-color: #17a2b8;    /* Azul claro */
+
+    /* Espaçamento (multiplos de um valor base, ex: 8px) */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+
+    /* Sombras */
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* ============================================== */
+/* 3. ESTILOS BASE (ELEMENTOS HTML COMUNS)       */
+/* Estilos padrão para tags HTML sem classes */
+/* ============================================== */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-color-dark);
+    margin-bottom: var(--spacing-md);
+    font-weight: bold;
+}
+
+h1 { font-size: 2.5rem; } /* 40px */
+h2 { font-size: 2rem; }   /* 32px */
+h3 { font-size: 1.75rem; }/* 28px */
+h4 { font-size: 1.5rem; } /* 24px */
+h5 { font-size: 1.25rem; }/* 20px */
+h6 { font-size: 1rem; }   /* 16px */
+
+p {
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-color-dark);
+}
+
+ul, ol {
+    list-style-position: inside;
+    margin-bottom: var(--spacing-md);
+}
+
+li {
+    padding: var(--spacing-xs) 0;
+}
+
+/* ============================================== */
+/* 4. LAYOUT GLOBAL DA APLICAÇÃO                 */
+/* Estrutura principal da página (sidebar, header, conteúdo) */
+/* ============================================== */
+.main-wrapper {
+    display: flex; /* Sidebar e conteúdo lado a lado */
+    width: 100%;
+    min-height: 100vh;
+}
+
+
+.content-wrapper {
+    flex-grow: 1; /* Ocupa o restante do espaço horizontal */
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background-color-light);
+}
+
+.content {
+    padding: var(--spacing-xl);
+    flex-grow: 1; /* Ocupa o restante do espaço vertical */
+    overflow-y: auto; /* Permite rolagem se o conteúdo for muito grande */
+}
+
+/* ============================================== */
+/* 5. CLASSES UTILITÁRIAS                         */
+/* Classes pequenas e reutilizáveis para espaçamento, alinhamento, etc. */
+/* ============================================== */
+
+/* Margens */
+.mb-xs { margin-bottom: var(--spacing-xs); }
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+.mb-xl { margin-bottom: var(--spacing-xl); }
+
+/* Paddings */
+.p-sm { padding: var(--spacing-sm); }
+.p-md { padding: var(--spacing-md); }
+.p-lg { padding: var(--spacing-lg); }
+
+/* Alinhamento de Texto */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+/* Flex Helpers */
+.d-flex { display: flex; }
+.justify-content-center { justify-content: center; }
+.align-items-center { align-items: center; }
+.flex-column { flex-direction: column; }
+
+/* Visibilidade */
+.hidden { display: none !important; }

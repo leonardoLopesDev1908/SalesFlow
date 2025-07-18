@@ -1,0 +1,95 @@
+/* Estilos para o corpo da página de login */
+
+body {
+    --color-white: #e6e6e6;
+    --color-light-gray: #F0F2F5; 
+    --color-light-green: #88f188; 
+
+    background: linear-gradient(to bottom, var(--color-light-gray), var(--color-white), var(--color-light-green));
+    display: flex;            
+    justify-content: center;    
+    align-items: center;        
+    min-height: 100vh;         
+    background-color: #f0f2f5;  
+    font-family: 'Arial', sans-serif; 
+    margin: 0;
+}
+
+.container-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 400px; /* Largura máxima para o container do formulário */
+    padding: 20px;
+}
+
+.form-login {
+    background-color: #ffffff;  /* Fundo branco */
+    padding: 30px;              /* Espaçamento interno */
+    border-radius: 8px;         /* Cantos arredondados */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Sombra suave */
+    width: 100%;                /* Ocupa toda a largura disponível no container-login */
+}
+
+.form-login h2 {
+    text-align: center;         /* Centraliza o título */
+    margin-bottom: 25px;        /* Espaçamento abaixo do título */
+    color: #333;                /* Cor do texto do título */
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.form-login hr {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    border-top: 1px solid #eee;
+}
+
+.form-login p {
+    text-align: center;         /* Centraliza a mensagem de erro */
+    margin-top: 15px;           /* Espaçamento acima da mensagem */
+    font-size: 0.95rem;
+}
+
+.form-login .btn-primary {
+    padding: 10px 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    background-color: #52ad52;
+    border-color: #52ad52;
+}
+
+.form-login .btn-primary:hover {
+    background-color: #336d33; 
+    border-color: #336d33; 
+}
+
+
+.form-login .form-control {
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 1rem;
+}
+
+.form-login .form-label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+/* Espaçamento entre os divs dos campos (Bootstrap mb-3 já ajuda) */
+.form-login div:not(.d-grid) {
+    margin-bottom: 20px; /* Ajuste se o Bootstrap mb-3 não for suficiente */
+}
+
+/* Responsividade básica para telas menores */
+@media (max-width: 576px) {
+    .form-login {
+        padding: 20px; /* Reduz o padding em telas muito pequenas */
+    }
+    .form-login h2 {
+        font-size: 1.5rem;
+    }
+}

@@ -1,4 +1,4 @@
-package com.example.salesflow.controller;
+package com.example.salesflow.controller.restcontrollers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
