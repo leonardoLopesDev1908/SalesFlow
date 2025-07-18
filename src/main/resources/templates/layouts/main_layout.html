@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title th:text="SalesFlow"></title>
+        <link rel="stylesheet" th:href="@{/css/layout/main.css}">
+        <link rel="stylesheet" th:href="@{/css/layout/header.css}">
+        <link rel="stylesheet" th:href="@{/css/layout/footer.css}">
+        <link rel="stylesheet" th:href="@{/css/layout/sidebar.css}">
+        <link rel="stylesheet" th:href="@{/css/fragments/cards.css}">
+    </head>
+    <body>
+        <div class="main-wrapper">
+            <aside class="sidebar" th:replace="~{fragments/sidebar :: sidebar}"></aside> 
+            <div class="content-wrapper">
+                <header class="header" th:replace="~{fragments/header :: header}"></header>
+                <main class="content">
+                    <div th:replace="~{pages/home :: homeContent}"></div> 
+                </main>    
+            </div>
+        </div>
+    <!-- <script th:src="@{/js/main.js}"></script> -->
+    </body>
+</html>

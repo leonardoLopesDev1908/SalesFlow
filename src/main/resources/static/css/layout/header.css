@@ -1,0 +1,26 @@
+.header {
+    /* background-color: var(--background-color-dark); */
+    background-color: rgb(226, 226, 226);
+    color: var(--text-color-dark);
+    padding: var(--spacing-md) var(--spacing-xl);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 100; /* Para garantir que fique acima de outros elementos */
+    position: sticky; /* Fica fixo no topo ao rolar */
+    top: 0;
+}
+
+.header .user-info {
+    display: flex;
+    align-items: center;
+}
+
+.header .user-info img {
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    margin-left: var(--spacing-sm);
+}

@@ -1,4 +1,4 @@
-package com.example.salesflow.controller;
+package com.example.salesflow.controller.restcontrollers;
 
 import java.time.LocalDate;
 import java.util.List;

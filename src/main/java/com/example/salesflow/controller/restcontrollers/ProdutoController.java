@@ -1,4 +1,4 @@
-package com.example.salesflow.controller;
+package com.example.salesflow.controller.restcontrollers;
 
 import java.util.List;
 import java.util.stream.Collectors;
