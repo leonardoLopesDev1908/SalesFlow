@@ -28,7 +28,7 @@ public class NotaFiscalSpecs {
     }
     
     public static Specification<NotaFiscal> intervaloEmissaoIsBetween(LocalDate dataInicio, LocalDate dataFinal) {
-        return (root, query, cb) -> {
+        return (var root, var query, var cb) -> {
 
             List<Predicate> predicates = new ArrayList<>(); 
             if (dataInicio != null) {

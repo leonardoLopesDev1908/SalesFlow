@@ -20,22 +20,22 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: 400px; /* Largura máxima para o container do formulário */
+    max-width: 400px; 
     padding: 20px;
 }
 
 .form-login {
-    background-color: #ffffff;  /* Fundo branco */
-    padding: 30px;              /* Espaçamento interno */
-    border-radius: 8px;         /* Cantos arredondados */
+    background-color: #ffffff;  
+    padding: 30px;              
+    border-radius: 8px;         
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Sombra suave */
-    width: 100%;                /* Ocupa toda a largura disponível no container-login */
+    width: 100%;                
 }
 
 .form-login h2 {
-    text-align: center;         /* Centraliza o título */
-    margin-bottom: 25px;        /* Espaçamento abaixo do título */
-    color: #333;                /* Cor do texto do título */
+    text-align: center;         
+    margin-bottom: 25px;        
+    color: #333;                
     font-size: 1.8rem;
     font-weight: bold;
 }

@@ -1,9 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main_layout}">
 
-<section th:fragment="homeContent" class="dashboard-content">
-    <h1>Dashboard Principal</h1>
-    <div class="dashboard-cards">
-        <div class="card card-receber">... A Receber Hoje ...</div>
-        <div class="card card-pagar">... A Pagar Hoje ...</div>
+<body>
+    <section layout:fragment="content" class="dashboard-content">
+        <h1>Dashboard Principal</h1>
+        <div class="dashboard-cards">
+            <div class="card card-receber">... A Receber Hoje ...</div>
+            <div class="card card-pagar">... A Pagar Hoje ...</div>
         </div>
-</section>
+    </section>
 </body>
+</html>
+

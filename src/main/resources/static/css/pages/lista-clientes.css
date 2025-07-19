@@ -1,0 +1,104 @@
+
+.container-pesquisa{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-pesquisa-clientes {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 900px;
+}
+
+.container-pesquisa-clientes form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.container-pesquisa-clientes input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #f0f0f0;
+    color: var(--text-color-dark);
+}
+
+.container-pesquisa-clientes input:focus {
+    border-color: var(--primary-color);
+    background-color: #fff;
+    outline: none;
+}
+
+.container-pesquisa-clientes button {
+    grid-column: span 2;
+    padding: 12px;
+    background-color: var(--primary-color);
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.container-pesquisa-clientes button:hover {
+    background-color: var(--primary-dark);
+}
+
+.container-table-clientes {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 900px;
+    overflow-x: auto;
+}
+
+.container-table-clientes table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.container-table-clientes th,
+.container-table-clientes td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+    color: var(--text-color-dark);
+}
+
+.container-table-clientes th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+h2 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+a button {
+    margin-top: 20px;
+    padding: 12px 24px;
+    background-color: var(--primary-color);
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+a button:hover {
+    background-color: var(--primary-dark);
+}

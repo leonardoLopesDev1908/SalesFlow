@@ -6,7 +6,7 @@
     box-shadow: var(--shadow-md);
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Para logo em cima, menu no meio, user info embaixo */
+    justify-content: space-between; 
 }
 
 .sidebar .logo {

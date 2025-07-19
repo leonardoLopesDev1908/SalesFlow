@@ -1,11 +1,11 @@
-package com.example.salesflow.controller.restcontrollers;
+package com.example.salesflow.controller.viewcontrollers;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.example.salesflow.controller.dto.cadastro.UsuarioDTO;
 import com.example.salesflow.controller.mappers.UsuarioMapper;
@@ -16,7 +16,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 /*Anotar com validação para apenas o TI*/
-@RestController
+@Controller
 @RequestMapping("/usuarios")
 @RequiredArgsConstructor
 public class UsuarioController {
@@ -26,7 +26,7 @@ public class UsuarioController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void cadastrar(@RequestBody @Valid UsuarioDTO dto){
+    public void cadastrar(@ModelAttribute @Valid UsuarioDTO dto){
         Usuario usuario = mapper.toEntity(dto);
         service.salvar(usuario);
     }

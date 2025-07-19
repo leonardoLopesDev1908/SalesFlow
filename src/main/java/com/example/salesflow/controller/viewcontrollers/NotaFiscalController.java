@@ -1,4 +1,4 @@
-package com.example.salesflow.controller.restcontrollers;
+package com.example.salesflow.controller.viewcontrollers;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -7,14 +7,15 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.example.salesflow.controller.dto.cadastro.NotaFiscalCadastroDTO;
 import com.example.salesflow.controller.dto.pesquisa.NotaFiscalPesquisaDTO;
@@ -23,10 +24,11 @@ import com.example.salesflow.model.NotaFiscal;
 import com.example.salesflow.model.TransacaoType;
 import com.example.salesflow.service.NotasService;
 
+import ch.qos.logback.core.model.Model;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@RestController
+@Controller
 @RequestMapping("/notas_fiscais")
 @RequiredArgsConstructor
 public class NotaFiscalController {
@@ -34,10 +36,21 @@ public class NotaFiscalController {
     private final NotasService notaFiscalService;
     private final NotaFiscalMapper mapper;
 
+    @GetMapping("/cadastrar_nota")
+    public String cadastroNotaFiscal(Model model){
+        return "pages/notas_fiscais";
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public NotaFiscal cadastrar(@RequestBody @Valid NotaFiscalCadastroDTO dto){
-        return notaFiscalService.salvar(dto);
+    public String cadastrar(@ModelAttribute("nota") @Valid NotaFiscalCadastroDTO dto,
+                                    BindingResult result, Model model){
+        if (result.hasErrors()) {
+            return "pages/notas_fiscais";
+        }
+        notaFiscalService.salvar(dto);
+
+        return "redirect:/notas_fiscais/listar";
     }
 
     @GetMapping("{num_nota}")
