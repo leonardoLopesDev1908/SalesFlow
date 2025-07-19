@@ -1,5 +1,7 @@
 package com.example.salesflow.controller.mappers;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -14,6 +16,7 @@ public interface ClienteMapper {
     @Mapping(target = "notasFiscais", ignore = true)
     Cliente toEntity(ClienteCadastroDTO dto);
     
-    @Mapping(target = "notasFiscais", ignore = true)
     ClientePesquisaDTO toDTO(Cliente cliente);
+
+    List<Cliente> toDtoList(List<ClientePesquisaDTO> dto);
 }

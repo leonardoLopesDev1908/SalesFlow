@@ -1,0 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa; /* cinza bem claro */
+    margin: 0;
+    padding: 0;
+    color: #333; /* cinza escuro para texto */
+}
+
+main {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff; /* branco */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); /* sombra leve */
+}
+
+h2 {
+    text-align: center;
+    color: var(--primary-color); 
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="endereco"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    background-color: #fff;
+}
+
+button {
+    padding: 12px;
+    background-color: var(--primary-color);
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: var(--primary-dark);
+}
+
+p {
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.container-cadastro{
+    background-color: var(--background-color-light);
+    display: flex;
+    flex-direction: column;
+    width: 25rem;
+}
