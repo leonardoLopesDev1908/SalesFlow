@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,17 +36,21 @@ public class ClienteController {
     }
 
     @PostMapping("/cadastrar")
-    public String cadastrar(@ModelAttribute @Valid ClienteCadastroDTO dto, Model model){
-        Cliente cliente = clienteMapper.toEntity(dto);
+    public String cadastrar(@ModelAttribute @Valid ClienteCadastroDTO dto, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("erro", "Preencha corretamente os campos");
+            return "pages/cliente-cadastro";
+        }
         
-        try {
-            clienteService.salvar(cliente);
+        try{
+            clienteService.salvar(clienteMapper.toEntity(dto));
             model.addAttribute("mensagem", "Cliente cadastrado com sucesso");
         } catch(IllegalArgumentException e){
             System.out.println(e.getMessage());
             model.addAttribute("erro", e.getMessage());
         }
         model.addAttribute("cliente", dto);
+        
         return "pages/cliente-cadastro";
     }
 

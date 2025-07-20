@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main_layout}">
+    <head>
+        <title>Fornecedores - SalesFlow</title>
+    </head>
+    <section layout:fragment="content">
+        <body>
+            <h2>Lista de Fornecedores</h2>
+            <a th:href="@{/fornecedores/cadastro}"><button>Novo fornecedor</button></a>
+            <div class="container-pesquisa"> 
+                <div class="container-pesquisa-clientes">
+                    <form method="get" th:action="@{/fornecedores}">
+                        <input type="text" name="nomeFantasia" placeholder="Nome fantasia" th:value="${nomeFantasia != null ? nomeFantasia : ''}" />
+                        <input type="text" name="razaoSocial" placeholder="Razão social" th:value="${razaoSocial != null ? razaoSocial : ''}" />
+                        <input type="text" class="mask-cnpj" name="cnpj" placeholder="CNPJ" th:value="${cnpj != null ? cnpj : ''}" />
+                        <input type="text" name="email" placeholder="Email" th:value="${email != null ? email : ''}" />
+                        <input type="text" class="mask-telefone" name="telefone" placeholder="Telefone" th:value="${telefone != null ? telefone : ''}"/>
+                        <button type="submit">Pesquisar</button>
+                    </form>
+                </div>
+                <div class="container-table-clientes">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Nome fantasia</th>
+                            <th>Razão social</th>
+                            <th>CNPJ</th>
+                            <th>Email</th>
+                            <th>Telefone</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="fornecedor : ${fornecedores}">
+                            <td th:text="${fornecedor.nomeFantasia}">Nome fantasia</td>
+                            <td th:text="${fornecedor.razaoSocial}">Razão social</td>
+                            <td th:text="${fornecedor.cnpj}">CNPJ</td>
+                            <td th:text="${fornecedor.email}">Email</td>
+                            <td th:text="${fornecedor.telefone}">Telefone</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <script src="https://unpkg.com/imask"></script>
+            <script th:src="@{/js/masks.js}"></script>
+        </body>
+    </section>
+</html>

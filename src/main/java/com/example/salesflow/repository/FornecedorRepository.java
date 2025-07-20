@@ -5,12 +5,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import com.example.salesflow.model.Fornecedor;
 
 @Repository
-public interface FornecedorRepository extends JpaRepository<Fornecedor, UUID>{
+public interface FornecedorRepository extends JpaRepository<Fornecedor, UUID>, JpaSpecificationExecutor<Fornecedor>{
 
     List<Fornecedor> findByNomeFantasiaLike(String nome);
 
