@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main_layout}">
+      <head>
+          <title>Produtos - SalesFlow</title>
+        </head>
+        <section layout:fragment="content">
+            <body>
+                <h2>Lista de Produtos</h2>
+                <a th:href="@{/produtos/cadastro}"><button>Novo produto</button></a>
+                <div class="container-pesquisa"> 
+                    <div class="container-pesquisa-clientes">
+                        <form method="get" th:action="@{/produtos}">
+                            <input type="text" name="nome" placeholder="Nome" th:value="${nome != null ? nome : ''}" />
+                            <input type="text" name="descricao" placeholder="Descrição" th:value="${descricao != null ? descricao : ''}" />
+                            <input type="text" name="marca" placeholder="Marca" th:value="${marca != null ? marca : ''}" />
+                            <button type="submit">Pesquisar</button>
+                        </form>
+                    </div>
+                    <div class="container-table-clientes">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Descrição</th>
+                                <th>Marca</th>
+                                <th>Preço</th>
+                                <th>Estoque</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="produto : ${produtos}">
+                                <td th:text="${produto.nome}">Nome</td>
+                                <td th:text="${produto.descricao}">Descrição</td>
+                                <td th:text="${produto.marca}">Marca</td>
+                                <td th:text="${produto.preco}">Preço</td>
+                                <td th:text="${produto.estoque}">Estoque</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <script src="https://unpkg.com/imask"></script>
+                <script th:src="@{/js/masks.js}"></script>
+            </body>
+    </section>
+</html>
