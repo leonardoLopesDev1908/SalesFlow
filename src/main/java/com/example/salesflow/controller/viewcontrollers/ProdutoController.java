@@ -1,22 +1,26 @@
 package com.example.salesflow.controller.viewcontrollers;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.example.salesflow.controller.dto.cadastro.ProdutoCadastroDTO;
+import com.example.salesflow.controller.dto.pesquisa.FornecedorPesquisaDTO;
 import com.example.salesflow.controller.dto.pesquisa.ProdutoPesquisaDTO;
 import com.example.salesflow.controller.mappers.ProdutoMapper;
+import com.example.salesflow.model.Fornecedor;
 import com.example.salesflow.model.Produto;
 import com.example.salesflow.service.ProdutoService;
 
@@ -29,14 +33,28 @@ import lombok.RequiredArgsConstructor;
 public class ProdutoController {
     
     private final ProdutoService produtoService;
-
     private final ProdutoMapper produtoMapper;
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Produto cadastrar(@ModelAttribute @Valid ProdutoCadastroDTO dto){
-        Produto produto = produtoMapper.toEntity(dto);
-        return produtoService.salvar(produto);
+    @GetMapping("/cadastro")
+    public String paginaProdutos(Model model){
+        return "pages/produto-cadastro";
+    }
+
+    @PostMapping("/cadastrar")
+    public String cadastrar(@ModelAttribute @Valid ProdutoCadastroDTO dto, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("erro", "Preencha corretamente os campos");
+            return "pages/produto-cadastro";
+        }
+        try {
+            produtoService.salvar(produtoMapper.toEntity(dto));
+            return "pages/produto-cadastro";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("erro", e.getMessage());
+        }
+
+        model.addAttribute("produto", dto);
+        return "pages/produto-cadastro";
     }
 
     @GetMapping("{id}")
@@ -52,14 +70,31 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProdutoPesquisaDTO>> buscaPorMarca(@RequestParam String marca){
-        List<Produto> produtos = produtoService.obterPorMarca(marca);
+    public String pesquisar(Model model,
+                            @RequestParam(value= "nome", required=false) String nome,
+                            @RequestParam(value= "descricao", required=false) String descricao,
+                            @RequestParam(value= "marca", required=false) String marca,
+                            @RequestParam(value= "preco", required=false) BigDecimal preco,
+                            @RequestParam(value= "estoque", required=false) Integer estoque,
+                            @RequestParam(value= "pagina", defaultValue="0") Integer pagina,
+                            @RequestParam(value= "tamanhoPagina", defaultValue="10") Integer tamanhoPagina){
         
-        List<ProdutoPesquisaDTO> dtos = produtos 
-            .stream()
-            .map(produto -> produtoMapper.toDTO(produto))
-            .collect(Collectors.toList());
+        Page<Fornecedor> fornecedores = produtoService.pesquisa(nome, descricao, marca, preco, 
+                                                estoque, pagina, tamanhoPagina);
         
-        return ResponseEntity.ok(dtos);
+        List<FornecedorPesquisaDTO> fornecedoresDto = fornecedores.getContent().stream()
+                                .map(fornecedorMapper::toDTO)
+                                .toList();
+        
+        model.addAttribute("titulo", "Fornecedores");
+        model.addAttribute("fornecedores", fornecedoresDto);
+        model.addAttribute("nomeFantasia", nomeFantasia);
+        model.addAttribute("razaoSocial", razaoSocial);
+        model.addAttribute("cnpj", cnpj);
+        model.addAttribute("email", email);
+        model.addAttribute("telefone", telefone);
+            
+        return "pages/lista-fornecedores";
     }
+
 }

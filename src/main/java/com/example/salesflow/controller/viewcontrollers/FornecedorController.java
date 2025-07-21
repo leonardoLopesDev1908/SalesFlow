@@ -85,8 +85,6 @@ public class FornecedorController {
                                 .map(fornecedorMapper::toDTO)
                                 .toList();
         
-        print(fornecedoresDto);
-
         model.addAttribute("titulo", "Fornecedores");
         model.addAttribute("fornecedores", fornecedoresDto);
         model.addAttribute("nomeFantasia", nomeFantasia);
@@ -96,12 +94,5 @@ public class FornecedorController {
         model.addAttribute("telefone", telefone);
             
         return "pages/lista-fornecedores";
-    }
-
-    private static void print(List<? extends Object> list){
-        System.out.println("Fornecedores: ");
-        for(Object o : list){
-            System.out.println(o);
-        }
     }
 }

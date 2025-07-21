@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const telefoneInputs = document.querySelectorAll('.mask-telefone');
   telefoneInputs.forEach(input => {
     IMask(input, {
-      mask: '(000) 00000-0000'
+      mask: '(00) 00000-0000'
     });
   });
   

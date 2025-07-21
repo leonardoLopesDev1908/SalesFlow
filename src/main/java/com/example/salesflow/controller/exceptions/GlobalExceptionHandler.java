@@ -51,7 +51,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErroResposta handleErroGenerico(RuntimeException e){
-        e.printStackTrace();    
         return new ErroResposta(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Erro no servidor. " + 
                 "Entre em contato com a administração.", List.of());
     }
