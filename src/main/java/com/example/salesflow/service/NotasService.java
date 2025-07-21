@@ -23,7 +23,9 @@ import com.example.salesflow.model.TransacaoType;
 import com.example.salesflow.repository.ClienteRepository;
 import com.example.salesflow.repository.FornecedorRepository;
 import com.example.salesflow.repository.NotaFiscalSpecs;
-import static com.example.salesflow.repository.NotaFiscalSpecs.*;
+import static com.example.salesflow.repository.NotaFiscalSpecs.clienteCpfEqual;
+import static com.example.salesflow.repository.NotaFiscalSpecs.fornecedorCnpjEqual;
+import static com.example.salesflow.repository.NotaFiscalSpecs.tipoTransacaoEqual;
 import com.example.salesflow.repository.NotasRepository;
 import com.example.salesflow.repository.ProdutoRepository;
 
