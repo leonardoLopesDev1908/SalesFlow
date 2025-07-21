@@ -1,8 +1,6 @@
 package com.example.salesflow.controller.viewcontrollers;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.salesflow.controller.dto.cadastro.ProdutoCadastroDTO;
-import com.example.salesflow.controller.dto.pesquisa.FornecedorPesquisaDTO;
 import com.example.salesflow.controller.dto.pesquisa.ProdutoPesquisaDTO;
 import com.example.salesflow.controller.mappers.ProdutoMapper;
-import com.example.salesflow.model.Fornecedor;
 import com.example.salesflow.model.Produto;
 import com.example.salesflow.service.ProdutoService;
 
@@ -48,6 +44,7 @@ public class ProdutoController {
         }
         try {
             produtoService.salvar(produtoMapper.toEntity(dto));
+            model.addAttribute("mensagem", "Produto cadastrado com sucesso");
             return "pages/produto-cadastro";
         } catch (IllegalArgumentException e) {
             model.addAttribute("erro", e.getMessage());
@@ -74,27 +71,22 @@ public class ProdutoController {
                             @RequestParam(value= "nome", required=false) String nome,
                             @RequestParam(value= "descricao", required=false) String descricao,
                             @RequestParam(value= "marca", required=false) String marca,
-                            @RequestParam(value= "preco", required=false) BigDecimal preco,
-                            @RequestParam(value= "estoque", required=false) Integer estoque,
                             @RequestParam(value= "pagina", defaultValue="0") Integer pagina,
                             @RequestParam(value= "tamanhoPagina", defaultValue="10") Integer tamanhoPagina){
         
-        Page<Fornecedor> fornecedores = produtoService.pesquisa(nome, descricao, marca, preco, 
-                                                estoque, pagina, tamanhoPagina);
+        Page<Produto> produtos = produtoService.pesquisa(nome, descricao, marca, pagina, tamanhoPagina);
         
-        List<FornecedorPesquisaDTO> fornecedoresDto = fornecedores.getContent().stream()
-                                .map(fornecedorMapper::toDTO)
+        List<ProdutoPesquisaDTO> produtosDto = produtos.getContent().stream()
+                                .map(produtoMapper::toDTO)
                                 .toList();
         
         model.addAttribute("titulo", "Fornecedores");
-        model.addAttribute("fornecedores", fornecedoresDto);
-        model.addAttribute("nomeFantasia", nomeFantasia);
-        model.addAttribute("razaoSocial", razaoSocial);
-        model.addAttribute("cnpj", cnpj);
-        model.addAttribute("email", email);
-        model.addAttribute("telefone", telefone);
+        model.addAttribute("produtos", produtosDto);
+        model.addAttribute("nome", nome);
+        model.addAttribute("descricao", descricao);
+        model.addAttribute("marca", marca);
             
-        return "pages/lista-fornecedores";
+        return "pages/lista-produtos";
     }
 
 }
