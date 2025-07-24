@@ -57,6 +57,9 @@ public class NotaFiscal {
     @JoinColumn(name="fornecedor_id", nullable = true)
     private Fornecedor fornecedor;
 
+    @ManyToOne
+    @JoinColumn(name="usuario_id")
+    private Usuario usuario;
 
     public void addItem(ItemNotaFiscal item){
         itens.add(item);
