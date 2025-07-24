@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main_layout}">
+    <head>
+        <title>Notas fiscais - SalesFlow</title>
+    </head>
+    <section layout:fragment="content">
+        <body>
+            <h2>Lista de Notas fiscais</h2>
+            <a th:href="@{/notas_fiscais/cadastro}"><button>Registrar NFE</button></a>
+            <div class="container-pesquisa"> 
+                <div class="container-pesquisa-clientes">
+                    <form method="get" th:action="@{/notas_fiscais}">
+                        <input type="number" min="1" step="1" name="num_nota" placeholder="Número da nota fiscal" th:value="${numNota}" />
+
+                        <label for="tipoTransacao">Tipo de Transação:</label>
+                        <select name="tipoTransacao" id="tipoTransacao" th:value="${tipoTransacao}" onchange="mostrarCampos()">
+                            <option value="COMPRA" th:selected="${tipo_transacao == 'COMPRA'}">Compra</option>
+                            <option value="VENDA" th:selected="${tipo_transacao == 'VENDA'}">Venda</option>
+                        </select>
+                        <div class="cpfDiv">
+                            <input type="text" class="mask-cpf" name="clienteCpf" placeholder="CPF do cliente" th:value="${clienteCpf}" />
+                        </div>
+
+                        <div class="cnpjDiv">
+                            <input type="text" class="mask-cnpj" name="fornecedorCnpj" placeholder="CNPJ do fornecedor" th:value="${fornecedorCnpj}" />
+                        </div>
+                        <input type="text" name="dataInicio" placeholder="Data inicial" th:value="${dataInicio}"/>
+                        <input type="text" name="dataFinal" placeholder="Data final" th:value="${dataFinal}"/>
+                        <button type="submit">Pesquisar</button>
+                    </form>
+                </div>
+                <div class="container-table-clientes">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Número da nota </th>
+                            <th>Tipo de transação</th>
+                            <th>Valor total</th>
+                            <th>CNPJ/CPF</th>
+                            <th>Data de emissão</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="nota : ${notas}">
+                            <td th:text="${nota.numNota}">Número da nota</td>
+                            <td th:text="${nota.tipoTransacao}">Tipo de transação</td>
+                            <td th:text="${nota.valorTotal}">Valor total</td>
+                            <td th:text="${nota.tipoTransacao == T(com.example.salesflow.model.TransacaoType).VENDA ? nota.cliente?.cpf : nota.fornecedor?.cnpj}">CPF/CNPJ</td>
+                            <td th:text="${nota.data != null ? #temporals.format(nota.data, 'dd/MM/yyyy HH:mm') : 'Sem data'}">Data de emissão</td>                            
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <script src="https://unpkg.com/imask"></script>
+            <script th:src="@{/js/cadastro_notas.js}"></script>
+            <script th:src="@{/js/filtro-notas.js}"></script>
+            <script th:src="@{/js/masks.js}"></script>
+        </body>
+    </section>
+</html>

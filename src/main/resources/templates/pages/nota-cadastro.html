@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main_layout}">
+
+<head>
+    <title layout:fragment="title">Registro de Nota fiscal</title>
+</head>
+
+    <body>
+        <main layout:fragment="content">
+            <h2>Registro de Nota Fiscal</h2>
+            <div class="container-cadastro">
+                <form id="notaFiscalForm" method="post" th:action="@{/notas_fiscais/cadastrar}">
+                    <div class="coluna-esquerda">
+                        <label for="tipoTransacao">Tipo de Transação:</label>
+                        <select name="tipoTransacao" id="tipoTransacao" th:value="${tipoTransacao}" onchange="mostrarCampos()">
+                            <option value="">Selecione o Tipo</option>
+                            <option value="COMPRA">Compra</option>
+                            <option value="VENDA">Venda</option>
+                        </select>
+
+                        <div class="cpfDiv">
+                            <input type="text" class="mask-cpf"  name="clienteCpf" placeholder="CPF do cliente" />
+                        </div>
+
+                        <div class="cnpjDiv">
+                            <input type="text" class="mask-cnpj" name="fornecedorCnpj" placeholder="CNPJ do fornecedor" />
+                        </div>
+
+                        <label for="valorTotal">Valor Total:</label>
+                        <input type="number" step="0.01" name="valorTotal" placeholder="Valor total da nota" required />
+
+                        <label for="desconto">Desconto:</label>
+                        <input type="number" step="0.01" name="desconto" placeholder="Desconto (se houver)" />
+                        </div>
+
+                        <div class="coluna-direita">
+                        <div class="cadastro-item">
+                            <label for="produtoId">ID do Produto:</label>
+                            <input type="number" step="1" min="1" id="produtoId" />
+
+                            <label for="quantidade">Quantidade:</label>
+                            <input type="number" id="quantidade" min="1" />
+
+                            <label for="precoUnitario">Preço Unitário:</label>
+                            <input type="number" id="precoUnitario" step="0.01" min="0.01" />
+
+                            <button type="button" onclick="adicionarItem()">Adicionar Item</button>
+                        </div>
+
+                        <div class="table-itens">
+                            <h3>Itens Adicionados</h3>
+                            <table id="itensTabela" border="1">
+                            <thead>
+                                <tr>
+                                <th>Produto ID</th>
+                                <th>Quantidade</th>
+                                <th>Preço Unitário</th>
+                                <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="botao-submit">
+                    <button type="submit">Cadastrar Nota Fiscal</button>
+                    </div>
+                </form>
+            </div>
+                <p th:if="${mensagem}" th:text="${mensagem}"></p>
+                <p th:if="${erro}" th:text="${erro}" style="color:red;"></p>
+        </main>
+        <script src="https://unpkg.com/imask"></script>
+        <script th:src="@{/js/masks.js}"></script>
+        <script th:src="@{/js/filtro-notas.js}"></script>
+        <script th:src="@{/js/cadastro-notas.js}"></script>
+    </body>
+</html>

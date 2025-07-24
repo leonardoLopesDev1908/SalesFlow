@@ -5,9 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.example.salesflow.controller.dto.cadastro.NotaFiscalCadastroDTO;
 import com.example.salesflow.controller.dto.pesquisa.NotaFiscalPesquisaDTO;
@@ -24,7 +22,6 @@ import com.example.salesflow.model.NotaFiscal;
 import com.example.salesflow.model.TransacaoType;
 import com.example.salesflow.service.NotasService;
 
-import ch.qos.logback.core.model.Model;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -36,21 +33,33 @@ public class NotaFiscalController {
     private final NotasService notaFiscalService;
     private final NotaFiscalMapper mapper;
 
-    @GetMapping("/cadastrar_nota")
+    @GetMapping("/cadastro")
     public String cadastroNotaFiscal(Model model){
-        return "pages/notas_fiscais";
+        return "pages/nota-cadastro";
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public String cadastrar(@ModelAttribute("nota") @Valid NotaFiscalCadastroDTO dto,
+    @PostMapping("/cadastrar")
+    public String cadastrar(@ModelAttribute @Valid NotaFiscalCadastroDTO dto,
                                     BindingResult result, Model model){
+        
         if (result.hasErrors()) {
-            return "pages/notas_fiscais";
+            System.out.println(result);
+            model.addAttribute("erro", "Preencha corretamente os campos");
+            return "pages/nota-cadastro";
         }
-        notaFiscalService.salvar(dto);
+        try {
+            notaFiscalService.salvar(dto);
+            System.out.println("Saindo do service");
+            model.addAttribute("mensagem", "Nota registrada com sucesso");
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("erro", e.getMessage());
+            System.out.println(e.getMessage());
+            return "pages/nota-cadastro";
+        }
 
-        return "redirect:/notas_fiscais/listar";
+        System.out.println("Retornando pagina de cadastro");
+        model.addAttribute("nota", dto); 
+        return "pages/nota-cadastro";
     }
 
     @GetMapping("{num_nota}")
@@ -79,29 +88,31 @@ public class NotaFiscalController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<NotaFiscalPesquisaDTO>> pesquisa(
-                @RequestParam(value="tipo_transacao", required=false) 
-                TransacaoType tipoTransacao,
-                @RequestParam(value = "cliente_cpf", required=false)
-                String clienteCpf, 
-                @RequestParam(value = "fornecedor_cnpj", required=false)
-                String fornecedorCnpj,
-                @RequestParam(value = "data_inicio", required=false)
-                LocalDate dataInicio,
-                @RequestParam(value = "data_final", required=false)
-                LocalDate dataFinal,
-                @RequestParam(value="pagina", defaultValue= "1")
-                Integer pagina,
-                @RequestParam(value="tamanho-pagina", defaultValue="1")
-                Integer tamanhoPagina
-    ){
+    public String pesquisa(Model model,
+                @RequestParam(value = "tipoTransacao", required = false) TransacaoType tipoTransacao,
+                @RequestParam(value = "clienteCpf", required = false) String clienteCpf,
+                @RequestParam(value = "fornecedorCnpj", required = false) String fornecedorCnpj,
+                @RequestParam(value = "dataInicio", required = false) LocalDate dataInicio,
+                @RequestParam(value = "dataFinal", required = false) LocalDate dataFinal,
+                @RequestParam(value = "pagina", defaultValue = "0") Integer pagina,
+                @RequestParam(value = "tamanho-pagina", defaultValue = "10") Integer tamanhoPagina){
+        
         Page<NotaFiscal> paginaResultado = notaFiscalService.pesquisa(tipoTransacao, 
                     clienteCpf, fornecedorCnpj, dataInicio, dataFinal, pagina, tamanhoPagina);
 
-        Page<NotaFiscalPesquisaDTO> resultado = paginaResultado.map(mapper::toDTO);
-        
-        return ResponseEntity.ok(resultado);
-    }
-    
+        List<NotaFiscalPesquisaDTO> resultado = paginaResultado.getContent()
+                    .stream()
+                    .map(mapper::toDTO)
+                    .toList();
 
+        model.addAttribute("titulo", "Notas");
+        model.addAttribute("notas", resultado);
+        model.addAttribute("tipoTransacao", tipoTransacao);
+        model.addAttribute("clienteCpf", clienteCpf);
+        model.addAttribute("fornecedorCnpj", fornecedorCnpj);
+        model.addAttribute("dataInicio", dataInicio);
+        model.addAttribute("dataFinal", dataFinal);
+
+        return "pages/lista-notas_fiscais";
+    }
 }

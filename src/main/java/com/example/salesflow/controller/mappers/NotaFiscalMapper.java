@@ -11,14 +11,14 @@ import com.example.salesflow.model.NotaFiscal;
 public interface NotaFiscalMapper {
     
     @Mapping(target = "numNota", ignore=true)
-    @Mapping(target = "data", ignore=true)
     @Mapping(target = "cliente", ignore=true)
+    @Mapping(target = "data", ignore=true)
     @Mapping(target = "fornecedor", ignore=true)
     @Mapping(target = "itens", ignore=true)
     @Mapping(target = "valorTotal", ignore=true)
+    @Mapping(target = "usuario", ignore=true)
     NotaFiscal toEntity(NotaFiscalCadastroDTO dto);
         
-    @Mapping(target = "itens", ignore=true)
     NotaFiscalPesquisaDTO toDTO(NotaFiscal notaFiscal);
 
 }

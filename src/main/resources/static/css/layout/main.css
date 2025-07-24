@@ -59,6 +59,7 @@ button, input, select, textarea {
     --border-color: #ddd;      /* Bordas de cards, inputs */
     --background-color-light: #f9f9f9; /* Fundo geral da aplicação */
     --background-color-medium: #eee; /* Fundos para seções leves */
+    --background-color-mid-dark: #afafaf; /* Fundos para seções leves */
     --background-color-dark: #2c3e50; /* Fundo para sidebar/header escuros */
 
     /* Cores de Status */
@@ -132,6 +133,7 @@ li {
     padding: var(--spacing-xl);
     flex-grow: 1; /* Ocupa o restante do espaço vertical */
     overflow-y: auto; /* Permite rolagem se o conteúdo for muito grande */
+    background-color: var(--background-color-light);
 }
 
 /* ============================================== */

@@ -27,6 +27,13 @@ form {
     gap: 15px;
 }
 
+select {
+  height: 38px; /* ou o valor que você achar melhor */
+  padding: 5px;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
 input[type="text"],
 input[type="email"],
 input[type="endereco"],
@@ -67,8 +74,35 @@ p {
 }
 
 .container-cadastro{
-    background-color: var(--background-color-light);
+    background-color: var(--background-color-medium);
     display: flex;
     flex-direction: column;
-    width: 25rem;
+    width: 27rem;
+    padding: 30px 40px;
+    border-radius: 10px;
+}
+
+.container-cadastro-dois-colunas {
+  background-color: var(--background-color-medium);
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.coluna-esquerda,
+.coluna-direita {
+  flex: 1 1 45%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.table-itens {
+  margin-top: 20px;
+}
+
+.botao-submit {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
 }
