@@ -12,12 +12,13 @@
             <div class="container-pesquisa"> 
                 <div class="container-pesquisa-clientes">
                     <form method="get" th:action="@{/notas_fiscais}">
-                        <input type="number" min="1" step="1" name="num_nota" placeholder="Número da nota fiscal" th:value="${numNota}" />
+                        <input type="number" min="1" step="1" name="numNota" placeholder="Número da nota fiscal" th:value="${numNota}" />
 
                         <label for="tipoTransacao">Tipo de Transação:</label>
                         <select name="tipoTransacao" id="tipoTransacao" th:value="${tipoTransacao}" onchange="mostrarCampos()">
-                            <option value="COMPRA" th:selected="${tipo_transacao == 'COMPRA'}">Compra</option>
-                            <option value="VENDA" th:selected="${tipo_transacao == 'VENDA'}">Venda</option>
+                            <option value="" th:selected="${tipoTransacao == NENHUMA}">Nenhuma</option>
+                            <option value="COMPRA" th:selected="${tipoTransacao == 'COMPRA'}">Compra</option>
+                            <option value="VENDA" th:selected="${tipoTransacao == 'VENDA'}">Venda</option>
                         </select>
                         <div class="cpfDiv">
                             <input type="text" class="mask-cpf" name="clienteCpf" placeholder="CPF do cliente" th:value="${clienteCpf}" />
@@ -38,7 +39,8 @@
                             <th>Número da nota </th>
                             <th>Tipo de transação</th>
                             <th>Valor total</th>
-                            <th>CNPJ/CPF</th>
+                            <th>CPF</th>
+                            <th>CNPJ</th>
                             <th>Data de emissão</th>
                         </tr>
                         </thead>
@@ -47,7 +49,10 @@
                             <td th:text="${nota.numNota}">Número da nota</td>
                             <td th:text="${nota.tipoTransacao}">Tipo de transação</td>
                             <td th:text="${nota.valorTotal}">Valor total</td>
-                            <td th:text="${nota.tipoTransacao == T(com.example.salesflow.model.TransacaoType).VENDA ? nota.cliente?.cpf : nota.fornecedor?.cnpj}">CPF/CNPJ</td>
+                            <td th:text="${nota.tipoTransacao == T(com.example.salesflow.model.TransacaoType).VENDA ? 
+                                      (nota.cliente!= null ? nota.cliente.cpf : 'Sem informação') : 'Sem informação'}">CPF</td>
+                            <td th:text="${nota.tipoTransacao == T(com.example.salesflow.model.TransacaoType).COMPRA ? 
+                                      (nota.fornecedor != null ? nota.fornecedor.cnpj : 'Sem informação') : 'Sem informação'}">CNPJ</td>
                             <td th:text="${nota.data != null ? #temporals.format(nota.data, 'dd/MM/yyyy HH:mm') : 'Sem data'}">Data de emissão</td>                            
                         </tr>
                         </tbody>
