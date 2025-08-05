@@ -12,7 +12,7 @@
             <div class="container-pesquisa"> 
                 <div class="container-pesquisa-clientes">
                     <form method="get" th:action="@{/notas_fiscais}">
-                        <input type="number" min="1" step="1" name="num_nota" placeholder="Número da nota fiscal" th:value="${numNota}" />
+                        <input type="number" min="1" step="1" name="numNota" placeholder="Número da nota fiscal" th:value="${numNota}" />
 
                         <label for="tipoTransacao">Tipo de Transação:</label>
                         <select name="tipoTransacao" id="tipoTransacao" th:value="${tipoTransacao}" onchange="mostrarCampos()">
@@ -43,14 +43,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="nota : ${notas}">
+                         <!--<tr th:each="nota : ${notas}">
                             <td th:text="${nota.numNota}">Número da nota</td>
                             <td th:text="${nota.tipoTransacao}">Tipo de transação</td>
                             <td th:text="${nota.valorTotal}">Valor total</td>
                             <td th:text="${nota.tipoTransacao == T(com.example.salesflow.model.TransacaoType).VENDA ? nota.cliente?.cpf : nota.fornecedor?.cnpj}">CPF/CNPJ</td>
                             <td th:text="${nota.data != null ? #temporals.format(nota.data, 'dd/MM/yyyy HH:mm') : 'Sem data'}">Data de emissão</td>                            
                         </tr>
-                        </tbody>
+                        </tbody>!-->
                     </table>
                 </div>
             </div>
