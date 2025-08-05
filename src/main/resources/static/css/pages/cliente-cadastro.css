@@ -7,12 +7,12 @@ body {
 }
 
 main {
-    max-width: 500px;
+    width: auto;
     margin: 40px auto;
     padding: 30px;
     background-color: #ffffff; /* branco */
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); /* sombra leve */
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
 }
 
 h2 {
@@ -28,7 +28,7 @@ form {
 }
 
 select {
-  height: 38px; /* ou o valor que você achar melhor */
+  height: 38px; 
   padding: 5px;
   font-size: 14px;
   border-radius: 5px;
@@ -42,7 +42,7 @@ input[type="number"]{
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 14px;
-    background-color: #f0f0f0;
+    background-color: #faf9f9;
     color: #333;
 }
 
@@ -55,7 +55,7 @@ input:focus {
 button {
     padding: 12px;
     background-color: var(--primary-color);
-    border: none;
+    border: 0.5px solid green;
     color: white;
     font-weight: bold;
     border-radius: 6px;
@@ -79,6 +79,7 @@ p {
     flex-direction: column;
     width: 27rem;
     padding: 30px 40px;
+    border: 1px solid rgb(153, 153, 153);
     border-radius: 10px;
 }
 
