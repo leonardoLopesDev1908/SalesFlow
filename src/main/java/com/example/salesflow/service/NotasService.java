@@ -25,6 +25,7 @@ import com.example.salesflow.repository.FornecedorRepository;
 import com.example.salesflow.repository.NotaFiscalSpecs;
 import static com.example.salesflow.repository.NotaFiscalSpecs.clienteCpfEqual;
 import static com.example.salesflow.repository.NotaFiscalSpecs.fornecedorCnpjEqual;
+import static com.example.salesflow.repository.NotaFiscalSpecs.numNotaEqual;
 import static com.example.salesflow.repository.NotaFiscalSpecs.tipoTransacaoEqual;
 import com.example.salesflow.repository.NotasRepository;
 import com.example.salesflow.repository.ProdutoRepository;
@@ -103,28 +104,31 @@ public class NotasService {
     }
 
     public Page<NotaFiscal> pesquisa(
-                TransacaoType tipoTransacao, String clienteCpf, String fornecedorCnpj,
+                Long numNota, TransacaoType tipoTransacao, String clienteCpf, String fornecedorCnpj,
                 LocalDate dataInicio, LocalDate dataFinal, Integer pagina, Integer tamanhoPagina){
 
         Specification<NotaFiscal> specs = null;
 
-        if (tipoTransacao != null){
+        if (numNota != null && !(numNota.toString()).isEmpty()){
+            specs = (specs == null) ? numNotaEqual(numNota) : specs.and(numNotaEqual(numNota));
+        }
+        if (tipoTransacao != null && tipoTransacao != TransacaoType.NENHUMA){
             specs = (specs == null) ? tipoTransacaoEqual(tipoTransacao) : specs.and(tipoTransacaoEqual(tipoTransacao));
         }
         if(clienteCpf != null && !clienteCpf.isEmpty()){
             specs = (specs == null) ? clienteCpfEqual(clienteCpf) : specs.and(clienteCpfEqual(clienteCpf));
         }
-        else if(fornecedorCnpj != null && !fornecedorCnpj.isEmpty()){
+        if(fornecedorCnpj != null && !fornecedorCnpj.isEmpty()){
             specs = (specs == null) ? fornecedorCnpjEqual(fornecedorCnpj) : specs.and(fornecedorCnpjEqual(fornecedorCnpj));
         }   
         if (dataInicio != null || dataFinal != null) {
-            specs = specs.and(NotaFiscalSpecs.intervaloEmissaoIsBetween(dataInicio, dataFinal));
+            specs = (specs == null) ? NotaFiscalSpecs.intervaloEmissaoIsBetween(dataInicio, dataFinal) : 
+                                                        specs.and(NotaFiscalSpecs.intervaloEmissaoIsBetween(dataInicio, dataFinal));
         }
         Pageable pageRequest = PageRequest.of(pagina, tamanhoPagina);
 
         return notaFiscalRepository.findAll(specs, pageRequest);
     }
-
 
     private void atualizarEstoque(Produto produto, Integer quantidade, TransacaoType transacao){
         if (transacao.equals(TransacaoType.COMPRA)){
