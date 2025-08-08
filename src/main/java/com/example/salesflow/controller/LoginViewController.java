@@ -11,3 +11,4 @@ public class LoginViewController {
         return "pages/login.html";
     }
 }
+    

@@ -45,7 +45,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                         <!--<tr th:each="nota : ${notas}">
+                         <tr th:each="nota : ${notas}">
                             <td th:text="${nota.numNota}">Número da nota</td>
                             <td th:text="${nota.tipoTransacao}">Tipo de transação</td>
                             <td th:text="${nota.valorTotal}">Valor total</td>
@@ -55,7 +55,7 @@
                                       (nota.fornecedor != null ? nota.fornecedor.cnpj : 'Sem informação') : 'Sem informação'}">CNPJ</td>
                             <td th:text="${nota.data != null ? #temporals.format(nota.data, 'dd/MM/yyyy HH:mm') : 'Sem data'}">Data de emissão</td>                            
                         </tr>
-                        </tbody>!-->
+                        </tbody>
                     </table>
                 </div>
             </div>
