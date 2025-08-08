@@ -10,7 +10,7 @@ import com.example.salesflow.model.TransacaoType;
 public record NotaFiscalPesquisaDTO(
     Long numNota,
     BigDecimal valorTotal,
-    TransacaoType tipoTransacao,
+    String tipoTransacao,
     ClienteSummaryDTO cliente,
     FornecedorSummaryDTO fornecedor,
     LocalDateTime data)   {

@@ -49,9 +49,9 @@
                             <td th:text="${nota.numNota}">Número da nota</td>
                             <td th:text="${nota.tipoTransacao}">Tipo de transação</td>
                             <td th:text="${nota.valorTotal}">Valor total</td>
-                            <td th:text="${nota.tipoTransacao == T(com.example.salesflow.model.TransacaoType).VENDA ? 
+                            <td th:text="${nota.tipoTransacao == 'VENDA' ? 
                                       (nota.cliente!= null ? nota.cliente.cpf : 'Sem informação') : 'Sem informação'}">CPF</td>
-                            <td th:text="${nota.tipoTransacao == T(com.example.salesflow.model.TransacaoType).COMPRA ? 
+                            <td th:text="${nota.tipoTransacao == 'COMPRA' ? 
                                       (nota.fornecedor != null ? nota.fornecedor.cnpj : 'Sem informação') : 'Sem informação'}">CNPJ</td>
                             <td th:text="${nota.data != null ? #temporals.format(nota.data, 'dd/MM/yyyy HH:mm') : 'Sem data'}">Data de emissão</td>                            
                         </tr>

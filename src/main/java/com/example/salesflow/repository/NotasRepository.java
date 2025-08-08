@@ -28,7 +28,7 @@ public interface NotasRepository extends JpaRepository<NotaFiscal, Long>, JpaSpe
     @Query("SELECT SUM(nf.valorTotal) FROM NotaFiscal nf " +
            "WHERE nf.tipoTransacao = :tipoTransacao AND MONTH(nf.data) = :month AND YEAR(nf.data) = :year")
     Optional<BigDecimal> findTotalByTransacaoAndMonthAndYear(
-        @Param("tipoTransacao") TransacaoType tipoTransacao, 
+        @Param("tipoTransacao") String tipoTransacao, 
         @Param("month") int month, 
         @Param("year") int year);
 
@@ -38,7 +38,7 @@ public interface NotasRepository extends JpaRepository<NotaFiscal, Long>, JpaSpe
             "GROUP BY i.produto.nome "+
             "ORDER BY SUM(i.quantidade) DESC")
     List<ProdutoVendidoDTO> findTop10ProdutosMaisVendidos(
-        @Param("tipoTransacao") TransacaoType tipoTransacao,
+        @Param("tipoTransacao") String tipoTransacao,
         @Param("dataInicial") LocalDate dataInicial,
         @Param("dataFinal") LocalDate dataFinal);
 

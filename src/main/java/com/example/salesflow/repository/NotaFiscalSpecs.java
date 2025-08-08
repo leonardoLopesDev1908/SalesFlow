@@ -23,7 +23,7 @@ public class NotaFiscalSpecs {
         return (root, query, cb) -> cb.equal(root.get("numNota"), numNota);
     }
     
-    public static Specification<NotaFiscal> tipoTransacaoEqual(TransacaoType tipoTransacao){
+    public static Specification<NotaFiscal> tipoTransacaoEqual(String tipoTransacao){
         return (root, query, cb) -> cb.equal(root.get("tipoTransacao"), tipoTransacao);
     }
  

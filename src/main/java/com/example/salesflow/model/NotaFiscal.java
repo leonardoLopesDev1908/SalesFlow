@@ -36,8 +36,7 @@ public class NotaFiscal {
     private Long numNota;
 
     @Column
-    @Enumerated(EnumType.STRING)
-    private TransacaoType tipoTransacao;
+    private String tipoTransacao;
 
     @Column(name="valorTotal", precision=18, scale=2)
     private BigDecimal valorTotal;
