@@ -2,7 +2,9 @@ package com.example.salesflow.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.salesflow.controller.dto.cadastro.ItemNotaFiscalCadastroDTO;
 import com.example.salesflow.controller.dto.cadastro.NotaFiscalCadastroDTO;
+import com.example.salesflow.controller.dto.pesquisa.ProdutoVendidoDTO;
 import com.example.salesflow.controller.mappers.ItemNotasFiscalMapper;
 import com.example.salesflow.controller.mappers.NotaFiscalMapper;
 import com.example.salesflow.model.Cliente;
@@ -56,33 +59,38 @@ public class NotasService {
     public NotaFiscal salvar(NotaFiscalCadastroDTO dto){
         NotaFiscal notaFiscal = notaFiscalMapper.toEntity(dto);
         
+        try {
         if(notaFiscal.getTipoTransacao().equals(TransacaoType.VENDA)){
-            Cliente cliente = clienteRepository.findByCpf(dto.clienteCpf());
-            notaFiscal.setCliente(cliente);
-            notaFiscal.setFornecedor(null);
-        } else if (notaFiscal.getTipoTransacao().equals(TransacaoType.COMPRA)){
-            Fornecedor fornecedor = fornecedorRepository.findByCnpj(dto.fornecedorCnpj());
-            notaFiscal.setFornecedor(fornecedor);
-            notaFiscal.setCliente(null);
-        }
+                Cliente cliente = clienteRepository.findByCpf(dto.clienteCpf());
+                notaFiscal.setCliente(cliente);
+                notaFiscal.setFornecedor(null);
+            } else if (notaFiscal.getTipoTransacao().equals(TransacaoType.COMPRA)){
+                Fornecedor fornecedor = fornecedorRepository.findByCnpj(dto.fornecedorCnpj());
+                notaFiscal.setFornecedor(fornecedor);
+                notaFiscal.setCliente(null);
+            }
 
-        BigDecimal valorTotal = BigDecimal.ZERO;
+            BigDecimal valorTotal = BigDecimal.ZERO;
 
-        for(ItemNotaFiscalCadastroDTO itemDTO : dto.itens()){
-            Produto produto = produtoService.obterPorId(itemDTO.produtoId()).orElse(null);
-        
-            ItemNotaFiscal itemNotaFiscal = itemMapper.toEntity(itemDTO);   
-            itemNotaFiscal.setProduto(produto);
-
-            notaFiscal.addItem(itemNotaFiscal);
+            for(ItemNotaFiscalCadastroDTO itemDTO : dto.itens()){
+                Produto produto = produtoService.obterPorId(itemDTO.produtoId()).orElse(null);
             
-            BigDecimal subTotal = itemDTO.precoUnitario().multiply(BigDecimal.valueOf(itemDTO.quantidade()));
-            valorTotal = valorTotal.add(subTotal);
-            
-            atualizarEstoque(produto, itemDTO.quantidade(), notaFiscal.getTipoTransacao());
-        }
+                ItemNotaFiscal itemNotaFiscal = itemMapper.toEntity(itemDTO);   
+                itemNotaFiscal.setProduto(produto);
 
-        notaFiscal.setValorTotal(valorTotal);
+                notaFiscal.addItem(itemNotaFiscal);
+                
+                BigDecimal subTotal = itemDTO.precoUnitario().multiply(BigDecimal.valueOf(itemDTO.quantidade()));
+                valorTotal = valorTotal.add(subTotal);
+                
+                atualizarEstoque(produto, itemDTO.quantidade(), notaFiscal.getTipoTransacao());
+            }
+
+            notaFiscal.setValorTotal(valorTotal);
+        }catch(Exception e){
+            System.out.println("Erro no service");
+            System.out.println(e.getMessage());
+        }
 
         return notaFiscalRepository.save(notaFiscal);
     }
@@ -138,4 +146,26 @@ public class NotasService {
         }
     }
 
+    public List<BigDecimal> totaisDoMes(){
+        LocalDate data = LocalDate.now();
+
+        BigDecimal compras = notaFiscalRepository.findTotalByTransacaoAndMonthAndYear(
+                        TransacaoType.COMPRA, data.getMonthValue(), data.getYear())
+                        .orElse(BigDecimal.ZERO);
+        BigDecimal vendas = notaFiscalRepository.findTotalByTransacaoAndMonthAndYear(
+                        TransacaoType.VENDA, data.getMonthValue(), data.getYear())
+                        .orElse(BigDecimal.ZERO);
+
+        return List.of(vendas, compras);
+    }
+
+    public List<ProdutoVendidoDTO> topProdutos(LocalDate dataInicial, LocalDate dataFinal){
+        if(dataFinal == null){
+            dataFinal = LocalDate.now();
+        }
+        if(dataInicial == null){
+            dataInicial = LocalDate.from(dataFinal.withDayOfMonth(1));
+        }
+        return notaFiscalRepository.findTop10ProdutosMaisVendidos(TransacaoType.VENDA, dataInicial, dataFinal);
+    }
 }
