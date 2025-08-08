@@ -48,6 +48,8 @@
     display: flex; /* Habilita o Flexbox */
     gap: 10px; /* Adiciona um espaço entre os itens */
     align-items: center; /* Alinha os itens verticalmente ao centro */
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 

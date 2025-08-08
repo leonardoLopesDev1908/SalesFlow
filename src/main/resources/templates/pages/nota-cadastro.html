@@ -13,12 +13,16 @@
             <div class="container-cadastro">
                 <form id="notaFiscalForm" method="post" th:action="@{/notas_fiscais/cadastrar}">
                     <div class="coluna-esquerda">
-                        <label for="tipoTransacao">Tipo de Transação:</label>
-                        <select name="tipoTransacao" id="tipoTransacao" th:value="${tipoTransacao}" onchange="mostrarCampos()">
-                            <option value="">Selecione o Tipo</option>
-                            <option value="COMPRA">Compra</option>
-                            <option value="VENDA">Venda</option>
-                        </select>
+
+                        <label for="tipoTransacao">Selecione o Tipo:</label>
+                        <input type="text" list="opcoesTransacao" name="tipoTransacao" id="tipoTransacao"
+                            th:value="${tipoTransacao}" 
+                            onchange="mostrarCampos()">
+                            
+                        <datalist id="opcoesTransacao">
+                            <option value="COMPRA"></option>
+                            <option value="VENDA"></option>
+                        </datalist>
 
                         <div class="cpfDiv">
                             <input type="text" class="mask-cpf"  name="clienteCpf" placeholder="CPF do cliente" />
@@ -27,14 +31,7 @@
                         <div class="cnpjDiv">
                             <input type="text" class="mask-cnpj" name="fornecedorCnpj" placeholder="CNPJ do fornecedor" />
                         </div>
-
-                        <label for="valorTotal">Valor Total:</label>
-                        <input type="number" step="0.01" name="valorTotal" placeholder="Valor total da nota" required />
-
-                        <label for="desconto">Desconto:</label>
-                        <input type="number" step="0.01" name="desconto" placeholder="Desconto (se houver)" />
-                        </div>
-
+                        
                         <div class="coluna-direita">
                         <div class="cadastro-item">
                             <label for="produtoId">ID do Produto:</label>
@@ -62,8 +59,9 @@
                             </thead>
                             <tbody></tbody>
                             </table>
-                        </div>
+                        </div> 
                     </div>
+                    
 
                     <div class="botao-submit">
                     <button type="submit">Cadastrar Nota Fiscal</button>
@@ -73,9 +71,5 @@
                 <p th:if="${mensagem}" th:text="${mensagem}"></p>
                 <p th:if="${erro}" th:text="${erro}" style="color:red;"></p>
         </main>
-        <script src="https://unpkg.com/imask"></script>
-        <script th:src="@{/js/masks.js}"></script>
-        <script th:src="@{/js/filtro-notas.js}"></script>
-        <script th:src="@{/js/cadastro-notas.js}"></script>
     </body>
 </html>

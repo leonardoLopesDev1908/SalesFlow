@@ -2,9 +2,7 @@ package com.example.salesflow.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +20,6 @@ import com.example.salesflow.model.Fornecedor;
 import com.example.salesflow.model.ItemNotaFiscal;
 import com.example.salesflow.model.NotaFiscal;
 import com.example.salesflow.model.Produto;
-import com.example.salesflow.model.TransacaoType;
 import com.example.salesflow.repository.ClienteRepository;
 import com.example.salesflow.repository.FornecedorRepository;
 import com.example.salesflow.repository.NotaFiscalSpecs;
@@ -54,22 +51,20 @@ public class NotasService {
     private final ProdutoService produtoService;
     private final ProdutoRepository produtoRepository;
 
-
     @Transactional
-    public NotaFiscal salvar(NotaFiscalCadastroDTO dto){
+    public void salvar(NotaFiscalCadastroDTO dto){
         NotaFiscal notaFiscal = notaFiscalMapper.toEntity(dto);
-        
+
         try {
-        if(notaFiscal.getTipoTransacao().equals(TransacaoType.VENDA)){
+            if(notaFiscal.getTipoTransacao().equals("VENDA")){
                 Cliente cliente = clienteRepository.findByCpf(dto.clienteCpf());
                 notaFiscal.setCliente(cliente);
                 notaFiscal.setFornecedor(null);
-            } else if (notaFiscal.getTipoTransacao().equals(TransacaoType.COMPRA)){
+            } else if (notaFiscal.getTipoTransacao().equals("COMPRA")){
                 Fornecedor fornecedor = fornecedorRepository.findByCnpj(dto.fornecedorCnpj());
                 notaFiscal.setFornecedor(fornecedor);
                 notaFiscal.setCliente(null);
             }
-
             BigDecimal valorTotal = BigDecimal.ZERO;
 
             for(ItemNotaFiscalCadastroDTO itemDTO : dto.itens()){
@@ -85,14 +80,13 @@ public class NotasService {
                 
                 atualizarEstoque(produto, itemDTO.quantidade(), notaFiscal.getTipoTransacao());
             }
-
+            System.out.println(valorTotal);
             notaFiscal.setValorTotal(valorTotal);
-        }catch(Exception e){
-            System.out.println("Erro no service");
-            System.out.println(e.getMessage());
-        }
 
-        return notaFiscalRepository.save(notaFiscal);
+        }catch(Exception e){
+            System.err.print(e.getMessage());
+        }
+        notaFiscalRepository.save(notaFiscal);
     }
 
     public NotaFiscal buscaPorId(Long id){
@@ -112,7 +106,7 @@ public class NotasService {
     }
 
     public Page<NotaFiscal> pesquisa(
-                Long numNota, TransacaoType tipoTransacao, String clienteCpf, String fornecedorCnpj,
+                Long numNota, String tipoTransacao, String clienteCpf, String fornecedorCnpj,
                 LocalDate dataInicio, LocalDate dataFinal, Integer pagina, Integer tamanhoPagina){
 
         Specification<NotaFiscal> specs = null;
@@ -120,7 +114,7 @@ public class NotasService {
         if (numNota != null && !(numNota.toString()).isEmpty()){
             specs = (specs == null) ? numNotaEqual(numNota) : specs.and(numNotaEqual(numNota));
         }
-        if (tipoTransacao != null && tipoTransacao != TransacaoType.NENHUMA){
+        if (tipoTransacao != null && !tipoTransacao.isEmpty()){
             specs = (specs == null) ? tipoTransacaoEqual(tipoTransacao) : specs.and(tipoTransacaoEqual(tipoTransacao));
         }
         if(clienteCpf != null && !clienteCpf.isEmpty()){
@@ -138,10 +132,10 @@ public class NotasService {
         return notaFiscalRepository.findAll(specs, pageRequest);
     }
 
-    private void atualizarEstoque(Produto produto, Integer quantidade, TransacaoType transacao){
-        if (transacao.equals(TransacaoType.COMPRA)){
+    private void atualizarEstoque(Produto produto, Integer quantidade, String transacao){
+        if (transacao.equals("COMPRA")){
             produtoRepository.aumentarEstoque(produto.getId(), quantidade);
-        } else if(transacao.equals(TransacaoType.VENDA)){
+        } else if(transacao.equals("VENDA")){
             produtoRepository.diminuirEstoque(produto.getId(), quantidade);
         }
     }
@@ -150,10 +144,10 @@ public class NotasService {
         LocalDate data = LocalDate.now();
 
         BigDecimal compras = notaFiscalRepository.findTotalByTransacaoAndMonthAndYear(
-                        TransacaoType.COMPRA, data.getMonthValue(), data.getYear())
+                        "COMPRA", data.getMonthValue(), data.getYear())
                         .orElse(BigDecimal.ZERO);
         BigDecimal vendas = notaFiscalRepository.findTotalByTransacaoAndMonthAndYear(
-                        TransacaoType.VENDA, data.getMonthValue(), data.getYear())
+                        "VENDA", data.getMonthValue(), data.getYear())
                         .orElse(BigDecimal.ZERO);
 
         return List.of(vendas, compras);
@@ -166,6 +160,6 @@ public class NotasService {
         if(dataInicial == null){
             dataInicial = LocalDate.from(dataFinal.withDayOfMonth(1));
         }
-        return notaFiscalRepository.findTop10ProdutosMaisVendidos(TransacaoType.VENDA, dataInicial, dataFinal);
+        return notaFiscalRepository.findTop10ProdutosMaisVendidos("VENDA", dataInicial, dataFinal);
     }
 }
