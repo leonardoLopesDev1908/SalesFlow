@@ -1,14 +1,21 @@
 package com.example.salesflow.controller;
 
-
-
+import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtils;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.salesflow.controller.dto.pesquisa.ProdutoVendidoDTO;
 import com.example.salesflow.service.NotasService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,45 +26,53 @@ public class HomeController {
     
     private final NotasService service;
 
-    // @GetMapping("/")
-    // public String home(@RequestParam(name="periodo", defaultValue="mes_atual") String periodo, Model model) throws IOException {
-    //     List<BigDecimal> dados = service.totaisDoMes();     
-
-    //     LocalDate dataFinal = LocalDate.now();
-    //     LocalDate dataInicial = switch(periodo){
-    //         case "ultimos_30_dias" -> dataFinal.minusDays(30);
-    //         case "ultimos_6_meses" -> dataFinal.minusMonths(6);
-    //         case "ultimo_ano" -> dataFinal.minusYears(1);
-    //         default -> LocalDate.of(dataFinal.getYear(), dataFinal.getMonth(), 1);
-    //     };
-        
-    //     try {
-    //         List<ProdutoVendidoDTO> ranking = service.topProdutos(dataInicial, dataFinal);
-    //         DefaultCategoryDataset datasetRanking = new DefaultCategoryDataset();
-    //         for (ProdutoVendidoDTO produto : ranking) {
-    //             datasetRanking.addValue(produto.quantidadeVenda(), "Quantidade", produto.nomeProduto());
-    //         }
-    //         JFreeChart chartRanking = ChartFactory.createBarChart(
-    //             "Top 10 Produtos Vendidos", "Produto", "Quantidade", datasetRanking
-    //         );
-    //         String pathRanking = "/images/graficoTop10Vendas.png";
-    //         ChartUtils.saveChartAsPNG(new File("src/main/resources/static" + pathRanking), chartRanking, 400, 300);
-    //         model.addAttribute("graficoVendas", pathRanking);
-    //     }catch(Exception e){
-    //         e.printStackTrace();
-    //     }
-        
-
-    //     model.addAttribute("vendas", dados.get(0));
-    //     model.addAttribute("compras", dados.get(1));
-
-    //     return "pages/home";
-    // }
-
     @GetMapping("/")
     public String home(@RequestParam(name="periodo", defaultValue="mes_atual") String periodo, Model model) throws IOException {
+        List<BigDecimal> dados = service.totaisDoMes();     
+        
+        LocalDateTime dataFinal = LocalDateTime.now();
+        LocalDateTime dataInicial = switch(periodo){
+            case "ultimos_30_dias" -> dataFinal.minusDays(30);
+            case "ultimos_6_meses" -> dataFinal.minusMonths(6);
+            case "ultimo_ano" -> dataFinal.minusYears(1);
+            default -> LocalDateTime.of(dataFinal.getYear(), dataFinal.getMonth(), 1, 0, 0, 0, 0);
+        };
+        
+        try {
+            List<ProdutoVendidoDTO> ranking = service.topProdutos(dataInicial, dataFinal);
+            DefaultCategoryDataset datasetRanking = new DefaultCategoryDataset();
+            for (ProdutoVendidoDTO produto : ranking) {
+                System.out.println(produto);
+                datasetRanking.addValue(produto.quantidadeVenda(), "Quantidade", produto.nomeProduto());
+            }
+            JFreeChart chartRanking = ChartFactory.createBarChart(
+                "Top 10 Produtos Vendidos", "Produto", "Quantidade", datasetRanking
+            );
+
+            File pastaImagens = new File("src/main/resources/static/images");
+            if (!pastaImagens.exists()) {
+                pastaImagens.mkdirs();
+            }
+            String pathRanking = "/images/graficoTop10Vendas.png";
+            File arquivo = new File("src/main/resources/static" + pathRanking);
+            
+            ChartUtils.saveChartAsPNG(arquivo, chartRanking, 400, 300);
+            model.addAttribute("graficoVendas", pathRanking);
+        }catch(IllegalArgumentException e){
+            System.err.print(e.getMessage());
+        }
+        
+
+        model.addAttribute("vendas", dados.get(0));
+        model.addAttribute("compras", dados.get(1));
+
         return "pages/home";
     }
+
+    // @GetMapping("/")
+    // public String home(@RequestParam(name="periodo", defaultValue="mes_atual") String periodo, Model model) throws IOException {
+    //     return "pages/home";
+    // }
 
 
 }

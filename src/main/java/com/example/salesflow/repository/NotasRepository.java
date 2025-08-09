@@ -1,7 +1,7 @@
 package com.example.salesflow.repository;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +15,6 @@ import com.example.salesflow.controller.dto.pesquisa.ProdutoVendidoDTO;
 import com.example.salesflow.model.Cliente;
 import com.example.salesflow.model.Fornecedor;
 import com.example.salesflow.model.NotaFiscal;
-import com.example.salesflow.model.TransacaoType;
 
 @Repository
 public interface NotasRepository extends JpaRepository<NotaFiscal, Long>, JpaSpecificationExecutor<NotaFiscal>{
@@ -39,7 +38,7 @@ public interface NotasRepository extends JpaRepository<NotaFiscal, Long>, JpaSpe
             "ORDER BY SUM(i.quantidade) DESC")
     List<ProdutoVendidoDTO> findTop10ProdutosMaisVendidos(
         @Param("tipoTransacao") String tipoTransacao,
-        @Param("dataInicial") LocalDate dataInicial,
-        @Param("dataFinal") LocalDate dataFinal);
+        @Param("dataInicial") LocalDateTime dataInicial,
+        @Param("dataFinal") LocalDateTime dataFinal);
 
 }

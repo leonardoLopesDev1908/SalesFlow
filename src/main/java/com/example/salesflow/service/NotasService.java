@@ -2,6 +2,7 @@ package com.example.salesflow.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ import com.example.salesflow.model.Fornecedor;
 import com.example.salesflow.model.ItemNotaFiscal;
 import com.example.salesflow.model.NotaFiscal;
 import com.example.salesflow.model.Produto;
+import com.example.salesflow.model.Usuario;
 import com.example.salesflow.repository.ClienteRepository;
 import com.example.salesflow.repository.FornecedorRepository;
 import com.example.salesflow.repository.NotaFiscalSpecs;
@@ -29,6 +31,7 @@ import static com.example.salesflow.repository.NotaFiscalSpecs.numNotaEqual;
 import static com.example.salesflow.repository.NotaFiscalSpecs.tipoTransacaoEqual;
 import com.example.salesflow.repository.NotasRepository;
 import com.example.salesflow.repository.ProdutoRepository;
+import com.example.salesflow.security.SecurityService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +53,8 @@ public class NotasService {
 
     private final ProdutoService produtoService;
     private final ProdutoRepository produtoRepository;
+
+    private final SecurityService securityService;
 
     @Transactional
     public void salvar(NotaFiscalCadastroDTO dto){
@@ -80,7 +85,9 @@ public class NotasService {
                 
                 atualizarEstoque(produto, itemDTO.quantidade(), notaFiscal.getTipoTransacao());
             }
-            System.out.println(valorTotal);
+            
+            Usuario usuario = securityService.obterUsuarioLogado();
+            notaFiscal.setUsuario(usuario);
             notaFiscal.setValorTotal(valorTotal);
 
         }catch(Exception e){
@@ -153,12 +160,12 @@ public class NotasService {
         return List.of(vendas, compras);
     }
 
-    public List<ProdutoVendidoDTO> topProdutos(LocalDate dataInicial, LocalDate dataFinal){
+    public List<ProdutoVendidoDTO> topProdutos(LocalDateTime dataInicial, LocalDateTime dataFinal){
         if(dataFinal == null){
-            dataFinal = LocalDate.now();
+            dataFinal = LocalDateTime.now();
         }
         if(dataInicial == null){
-            dataInicial = LocalDate.from(dataFinal.withDayOfMonth(1));
+            dataInicial = LocalDateTime.from(dataFinal.withDayOfMonth(1));
         }
         return notaFiscalRepository.findTop10ProdutosMaisVendidos("VENDA", dataInicial, dataFinal);
     }

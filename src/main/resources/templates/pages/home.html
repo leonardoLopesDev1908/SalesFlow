@@ -9,12 +9,12 @@
             <h1>Dashboard Principal</h1>
             <div class="line-one">
                 <div class="card card-vendas">
-                    <p>Vendas do mes</p>
-                    <p style=color:green th:value="@{vendas}"></p>
+                    <p>Vendas do mês</p>
+                    <p style=color:green th:text="'R$ ' + ${vendas}"></p>
                 </div>
                 <div class="card card-vendas">
-                    <p>Compras do mes</p>
-                    <p style=color:red th:value="@{compras}"></p>
+                    <p>Compras do mês</p>
+                    <p style=color:red th:text="'R$ ' + ${compras}"></p>
                 </div>
             </div>
             <div class="line-two">
@@ -32,20 +32,6 @@
                         </form>
                     </div>
                     <img th:src="@{${graficoVendas}}" alt="Gráfico de ranking de produtos" class="chart-img"/>
-                </div>
-                <div class="card box">
-                    <div class="filter-container">
-                        <form method="get" th:action="@{/}">
-                            <label for="periodo">Filtrar por período:</label>
-                            <select name="periodo" id="periodo">
-                                <option value="mes_atual">Mês Atual</option>
-                                <option value="ultimos_30_dias">Últimos 30 dias</option>
-                                <option value="ultimos_6_meses">Últimos 6 meses</option>
-                                <option value="ultimo_ano">Último ano</option>
-                            </select>
-                            <button type="submit">Atualizar</button>
-                        </form>
-                    </div>
                 </div>
             </div>
         <script src="https://unpkg.com/imask"></script>
