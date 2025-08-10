@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.5.3</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>salesflow</artifactId>
@@ -136,9 +136,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.jfree</groupId>
-			<artifactId>jfreechart-fx</artifactId>
-			<version>1.0.1</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 
 	</dependencies>
@@ -153,11 +152,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.11.0</version> <!-- Atualizado para versão mais recente -->
+				<version>3.11.0</version>
 				<configuration>
 					<release>${java.version}</release>
 					<annotationProcessorPaths>
-						<!-- Lombok deve vir primeiro -->
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
@@ -168,7 +166,6 @@
 							<artifactId>lombok-mapstruct-binding</artifactId>
 							<version>${lombok-mapstruct-binding.version}</version>
 						</path>
-						<!-- MapStruct depois -->
 						<path>
 							<groupId>org.mapstruct</groupId>
 							<artifactId>mapstruct-processor</artifactId>
@@ -176,7 +173,6 @@
 						</path>
 					</annotationProcessorPaths>
 					<compilerArgs>
-						<!-- Argumentos essenciais para resolver o erro do Lombok -->
 						<arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
 						<arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
 		                <arg>-Amapstruct.defaultComponentModel=spring</arg>

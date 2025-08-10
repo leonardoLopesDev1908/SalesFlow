@@ -55,6 +55,7 @@ public class NotasService {
     private final ProdutoRepository produtoRepository;
 
     private final SecurityService securityService;
+    private final MailService mailService;
 
     @Transactional
     public void salvar(NotaFiscalCadastroDTO dto){
@@ -89,6 +90,10 @@ public class NotasService {
             Usuario usuario = securityService.obterUsuarioLogado();
             notaFiscal.setUsuario(usuario);
             notaFiscal.setValorTotal(valorTotal);
+
+            mailService.enviarEmail(notaFiscal.getCliente().getEmail(), "Confirmação de compra", 
+                        "Olá, " + notaFiscal.getCliente().getNome() + "!" + "\n" +
+                        "Segue anexa sua NF-e confirmando a compra realizada");
 
         }catch(Exception e){
             System.err.print(e.getMessage());
