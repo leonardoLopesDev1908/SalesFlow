@@ -38,3 +38,13 @@
     color: var(--primary-light);
     text-decoration: none;
 }
+
+.sidebar li.active{
+    background-color: var(--primary-dark);
+    color: white;
+    font-weight: bold;
+}
+
+.sidebar li.active a{
+    color: white;
+}
