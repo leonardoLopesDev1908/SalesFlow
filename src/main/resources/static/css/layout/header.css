@@ -24,3 +24,14 @@
     height: 32px;
     margin-left: var(--spacing-sm);
 }
+
+.header .user-info p{
+    font-family: 500;
+    font-size: 20px;
+}
+
+.logo{
+    font-size: 45px;
+    font-weight: 600;
+}
+

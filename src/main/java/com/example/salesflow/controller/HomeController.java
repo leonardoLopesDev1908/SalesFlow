@@ -1,21 +1,15 @@
 package com.example.salesflow.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
-import org.jfree.data.category.DefaultCategoryDataset;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.salesflow.controller.dto.pesquisa.ProdutoVendidoDTO;
 import com.example.salesflow.service.NotasService;
 
 import lombok.RequiredArgsConstructor;
@@ -38,29 +32,29 @@ public class HomeController {
             default -> LocalDateTime.of(dataFinal.getYear(), dataFinal.getMonth(), 1, 0, 0, 0, 0);
         };
         
-        try {
-            List<ProdutoVendidoDTO> ranking = service.topProdutos(dataInicial, dataFinal);
-            DefaultCategoryDataset datasetRanking = new DefaultCategoryDataset();
-            for (ProdutoVendidoDTO produto : ranking) {
-                System.out.println(produto);
-                datasetRanking.addValue(produto.quantidadeVenda(), "Quantidade", produto.nomeProduto());
-            }
-            JFreeChart chartRanking = ChartFactory.createBarChart(
-                "Top 10 Produtos Vendidos", "Produto", "Quantidade", datasetRanking
-            );
+        // try {
+        //     List<ProdutoVendidoDTO> ranking = service.topProdutos(dataInicial, dataFinal);
+        //     DefaultCategoryDataset datasetRanking = new DefaultCategoryDataset();
+        //     for (ProdutoVendidoDTO produto : ranking) {
+        //         System.out.println(produto);
+        //         datasetRanking.addValue(produto.quantidadeVenda(), "Quantidade", produto.nomeProduto());
+        //     }
+        //     JFreeChart chartRanking = ChartFactory.createBarChart(
+        //         "Top 10 Produtos Vendidos", "Produto", "Quantidade", datasetRanking
+        //     );
 
-            File pastaImagens = new File("src/main/resources/static/images");
-            if (!pastaImagens.exists()) {
-                pastaImagens.mkdirs();
-            }
-            String pathRanking = "/images/graficoTop10Vendas.png";
-            File arquivo = new File("src/main/resources/static" + pathRanking);
+        //     File pastaImagens = new File("src/main/resources/static/images");
+        //     if (!pastaImagens.exists()) {
+        //         pastaImagens.mkdirs();
+        //     }
+        //     String pathRanking = "/images/graficoTop10Vendas.png";
+        //     File arquivo = new File("salesflow/src/main/resources/static" + pathRanking);
             
-            ChartUtils.saveChartAsPNG(arquivo, chartRanking, 400, 300);
-            model.addAttribute("graficoVendas", pathRanking);
-        }catch(IllegalArgumentException e){
-            System.err.print(e.getMessage());
-        }
+        //     ChartUtils.saveChartAsPNG(arquivo, chartRanking, 400, 300);
+        //     model.addAttribute("graficoVendas", pathRanking);
+        // }catch(IllegalArgumentException e){
+        //     System.err.print(e.getMessage());
+        // }
         
 
         model.addAttribute("vendas", dados.get(0));

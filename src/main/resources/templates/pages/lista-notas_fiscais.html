@@ -42,6 +42,7 @@
                             <th>CPF</th>
                             <th>CNPJ</th>
                             <th>Data de emissão</th>
+                            <th>NF-e</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -50,19 +51,19 @@
                             <td th:text="${nota.tipoTransacao}">Tipo de transação</td>
                             <td th:text="${nota.valorTotal}">Valor total</td>
                             <td th:text="${nota.tipoTransacao == 'VENDA' ? 
-                                      (nota.cliente!= null ? nota.cliente.cpf : 'Sem informação') : 'Sem informação'}">CPF</td>
+                            (nota.cliente!= null ? nota.cliente.cpf : 'Sem informação') : 'Sem informação'}">CPF</td>
                             <td th:text="${nota.tipoTransacao == 'COMPRA' ? 
-                                      (nota.fornecedor != null ? nota.fornecedor.cnpj : 'Sem informação') : 'Sem informação'}">CNPJ</td>
+                            (nota.fornecedor != null ? nota.fornecedor.cnpj : 'Sem informação') : 'Sem informação'}">CNPJ</td>
                             <td th:text="${nota.data != null ? #temporals.format(nota.data, 'dd/MM/yyyy HH:mm') : 'Sem data'}">Data de emissão</td>                            
+                            <!-- <td th:href="@{/notas_fiscas/deletar/nota.numNota}">Excluir</td> -->
+                            <td>
+                                <button type="button" th:onclick="'abrirPopup(' + ${nota.numNota} + ')'">Visualizar Nota</button>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <script src="https://unpkg.com/imask"></script>
-            <script th:src="@{/js/cadastro_notas.js}"></script>
-            <script th:src="@{/js/filtro-notas.js}"></script>
-            <script th:src="@{/js/masks.js}"></script>
         </body>
     </section>
 </html>

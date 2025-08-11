@@ -22,6 +22,7 @@
                         <table>
                             <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Nome</th>
                                 <th>Descrição</th>
                                 <th>Marca</th>
@@ -31,6 +32,7 @@
                             </thead>
                             <tbody>
                             <tr th:each="produto : ${produtos}">
+                                <td th:text="${produto.id}">ID</td>
                                 <td th:text="${produto.nome}">Nome</td>
                                 <td th:text="${produto.descricao}">Descrição</td>
                                 <td th:text="${produto.marca}">Marca</td>
