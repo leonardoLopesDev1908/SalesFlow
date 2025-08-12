@@ -99,8 +99,8 @@ public class NotaFiscalController {
         if(nf == null){
             System.out.println("Nota não encontrada");
         }
+    
         String xml = GeradorXmlSimples.gerarXML(nf);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_PLAIN);
 
