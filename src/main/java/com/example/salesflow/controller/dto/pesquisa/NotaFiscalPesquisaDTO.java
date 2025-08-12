@@ -1,11 +1,13 @@
 package com.example.salesflow.controller.dto.pesquisa;
 
+import java.util.List;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.example.salesflow.controller.dto.summary.ClienteSummaryDTO;
 import com.example.salesflow.controller.dto.summary.FornecedorSummaryDTO;
-import com.example.salesflow.model.TransacaoType;
+import com.example.salesflow.controller.dto.summary.ProdutoSummaryDTO;
 
 public record NotaFiscalPesquisaDTO(
     Long numNota,
@@ -13,5 +15,6 @@ public record NotaFiscalPesquisaDTO(
     String tipoTransacao,
     ClienteSummaryDTO cliente,
     FornecedorSummaryDTO fornecedor,
-    LocalDateTime data)   {
+    LocalDateTime data,
+    List<ProdutoSummaryDTO> itens)   {
 }

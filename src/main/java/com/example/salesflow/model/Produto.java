@@ -40,4 +40,8 @@ public class Produto {
     @OneToMany(mappedBy = "produto", fetch = FetchType.LAZY)
     private List<ItemNotaFiscal> itensNotaFiscal;
 
+    @Override
+    public String toString(){
+        return nome;
+    }
 }
