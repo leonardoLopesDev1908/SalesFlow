@@ -1,17 +1,24 @@
 <nav class="sidebar" th:fragment="sidebar">
     <ul>
-        <li><a th:href="@{/}">Dashboard</a></li>
+        <li>
+            <!-- Créditos do ícone: https://www.flaticon.com/br/autores/iconmarketpk - grafico -->
+            <a th:href="@{/}"><img th:src="@{/images/grafico.png}" alt="icone-grafico"></a></li>
         <li th:classappend="${paginaAtual == 'clientes'} ? 'active' : ''">
-            <a th:href="@{/clientes}">Clientes</a>
+            <!-- Créditos do ícone: https://www.flaticon.com/br/autores/freepik -->
+            <a th:href="@{/clientes}"><img th:src="@{/images/cliente.png}" alt="icone-cliente"></a>
         </li>
         <li th:classappend="${paginaAtual == 'produtos'} ? 'active' : ''">
-            <a th:href="@{/produtos}">Produtos</a>
+            <!-- Créditos do ícone: https://www.flaticon.com/br/autores/prettycons -->
+            <a th:href="@{/produtos}"><img th:src="@{/images/placa-de-video.png}" alt="icone-placadevideo"></a>
         </li>
         <li th:classappend="${paginaAtual == 'fornecedores'} ? 'active' : ''">
-            <a th:href="@{/fornecedores}">Fornecedores</a>
+            <!-- Créditos do ícone: https://www.flaticon.com/br/autores/freepik -->
+            <a th:href="@{/fornecedores}"><img th:src="@{/images/correio.png}" alt="icone-fornecedor"></a>
         </li>
         <li th:classappend="${paginaAtual == 'notas_fiscais'} ? 'active' : ''">
-            <a th:href="@{/notas_fiscais}"><i class="icon-users"></i> Notas fiscais</a>
+            <!-- Créditos do ícone: https://www.flaticon.com/br/autores/slidicon -->
+            <a th:href="@{/notas_fiscais}"><img th:src="@{/images/nota.png}" alt="icone-notafiscal"></a>
         </li>
     </ul>
 </nav>
+

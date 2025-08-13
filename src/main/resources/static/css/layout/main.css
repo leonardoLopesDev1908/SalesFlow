@@ -35,9 +35,9 @@ button, input, select, textarea {
 }
 
 :root {
-    --primary-color: #52ad52; 
+    --primary-color: rgb(82, 173, 82); 
     --primary-light: #5fe871;
-    --primary-dark: #336d33;
+    --primary-dark: rgb(51, 109, 51);
 
     --secondary-color: #00bcd4; 
     --secondary-light: #5edae6;

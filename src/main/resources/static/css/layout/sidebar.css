@@ -1,5 +1,4 @@
 .sidebar {
-    width: 210px; 
     background-color: var(--background-color-medium);
     color: var(--text-color-dark);
     padding: var(--spacing-md);
@@ -47,4 +46,8 @@
 
 .sidebar li.active a{
     color: white;
+}
+
+.sidebar li img{
+    max-width: 45px;
 }

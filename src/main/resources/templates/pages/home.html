@@ -21,19 +21,39 @@
                 <div class="card box">
                     <div class="filter-container">
                         <form method="get" th:action="@{/}">
-                            <label for="periodo">Filtrar por período:</label>
-                            <select name="periodo" id="periodo">
-                                <option value="mes_atual">Mês Atual</option>
-                                <option value="ultimos_30_dias">Últimos 30 dias</option>
-                                <option value="ultimos_6_meses">Últimos 6 meses</option>
-                                <option value="ultimo_ano">Último ano</option>
-                            </select>
+                            <div>
+                                <label for="periodo">Filtrar por período:</label>
+                                <select name="periodo" id="periodo">
+                                    <option value="mes_atual" th:selected="${param.periodo == 'mes_atual'}">Mês Atual</option>
+                                    <option value="ultimos_30_dias" th:selected="${param.periodo == 'ultimos_30_dias'}">Últimos 30 dias</option>
+                                    <option value="ultimos_6_meses" th:selected="${param.periodo == 'ultimos_6_meses'}">Últimos 6 meses</option>
+                                    <option value="ultimo_ano" th:selected="${param.periodo == 'ultimo_ano'}">Último ano</option>
+                                </select>
+                            </div>
                             <button type="submit">Atualizar</button>
                         </form>
                     </div>
-                    <img th:src="@{${graficoVendas}}" alt="Gráfico de ranking de produtos" class="chart-img"/>
+
+                    <canvas id="graficoVendas"></canvas>
                 </div>
             </div>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script th:inline="javascript">
+            let labels = /*[[${labels}]]*/ [];
+            let valores = /*[[${valores}]]*/ [];
+
+            new Chart(document.getElementById('graficoVendas'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Quantidade',
+                        data: valores,
+                        backgroundColor: 'rgba(82, 173, 82, 0.5)'
+                    }]
+                }
+            });
+        </script>
         <script src="https://unpkg.com/imask"></script>
         <script th:src="@{/js/masks.js}"></script>
         <script th:src="@{/js/filtro-notas.js}"></script>
@@ -42,4 +62,5 @@
     </section>
 </body>
 </html>
+
 
