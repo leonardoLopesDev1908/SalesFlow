@@ -3,7 +3,9 @@ package com.example.salesflow.service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Service;
 import com.example.salesflow.controller.dto.cadastro.ItemNotaFiscalCadastroDTO;
 import com.example.salesflow.controller.dto.cadastro.NotaFiscalCadastroDTO;
 import com.example.salesflow.controller.dto.pesquisa.ProdutoVendidoDTO;
+import com.example.salesflow.controller.dto.visualizacao.ItemNotaFiscalVisualizacaoDTO;
+import com.example.salesflow.controller.dto.visualizacao.NotaFiscalVisualizacaoDTO;
 import com.example.salesflow.controller.mappers.ItemNotasFiscalMapper;
 import com.example.salesflow.controller.mappers.NotaFiscalMapper;
 import com.example.salesflow.model.Cliente;
@@ -41,6 +45,7 @@ import lombok.RequiredArgsConstructor;
 public class NotasService {
     
     private final NotasRepository notaFiscalRepository;
+    private final NotaFiscalMapper notaMapper;
 
     private final ClienteRepository clienteRepository;
     private final ClienteService clienteService;
@@ -91,9 +96,31 @@ public class NotasService {
             notaFiscal.setUsuario(usuario);
             notaFiscal.setValorTotal(valorTotal);
 
+            /*Nota para criação do PDF*/
+            NotaFiscalVisualizacaoDTO notaDto = notaMapper.toFiscalVisualizacaoDTO(notaFiscal);
+            notaDto.setUsuarioNome(notaFiscal.getUsuario().getLogin());
+            notaDto.setNumNota(notaFiscal.getNumNota());
+            notaDto.setData(notaFiscal.getData());
+
+            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            notaDto.setFormatada(notaDto.getData().format(formatador));
+
+            List<ItemNotaFiscalVisualizacaoDTO> itensDto = notaFiscal.getItens().stream()   
+                .map(item -> {
+                    ItemNotaFiscalVisualizacaoDTO itemNovo = new ItemNotaFiscalVisualizacaoDTO();
+                    itemNovo.setPrecoUnitario(item.getPrecoUnitario());
+                    itemNovo.setQuantidade(item.getQuantidade());
+                    itemNovo.setProdutoNome(item.getProduto().getNome());
+                    return itemNovo;
+                })
+                .collect(Collectors.toList());
+
+            notaDto.setItens(itensDto);
+
             mailService.enviarEmail(notaFiscal.getCliente().getEmail(), "Confirmação de compra", 
-                        "Olá, " + notaFiscal.getCliente().getNome() + "!" + "\n" +
-                        "Segue anexa sua NF-e confirmando a compra realizada");
+                        "Olá, " + notaFiscal.getCliente().getNome() + "!" + "\n" + 
+                        "\nMuito obrigado pela preferencia. Conte sempre conosco quando quiser adquirir novas peças para o seu PC!\n" +
+                        "Como confirmação de sua compra, segue anexa sua NF-e com os dados da transação e dos itens comprados. Abraços!", notaDto);
 
         }catch(Exception e){
             System.err.print(e.getMessage());

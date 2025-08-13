@@ -5,6 +5,7 @@ import org.mapstruct.Mapping;
 
 import com.example.salesflow.controller.dto.cadastro.NotaFiscalCadastroDTO;
 import com.example.salesflow.controller.dto.pesquisa.NotaFiscalPesquisaDTO;
+import com.example.salesflow.controller.dto.visualizacao.NotaFiscalVisualizacaoDTO;
 import com.example.salesflow.model.NotaFiscal;
 
 @Mapper(componentModel = "spring")
@@ -20,5 +21,7 @@ public interface NotaFiscalMapper {
     NotaFiscal toEntity(NotaFiscalCadastroDTO dto);
         
     NotaFiscalPesquisaDTO toDTO(NotaFiscal notaFiscal);
+
+    NotaFiscalVisualizacaoDTO toFiscalVisualizacaoDTO(NotaFiscal notaFiscal);
 
 }
