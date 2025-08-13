@@ -1,7 +1,10 @@
 package com.example.salesflow.controller.viewcontrollers;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +24,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.salesflow.controller.dto.cadastro.NotaFiscalCadastroDTO;
 import com.example.salesflow.controller.dto.pesquisa.NotaFiscalPesquisaDTO;
+import com.example.salesflow.controller.dto.visualizacao.ItemNotaFiscalVisualizacaoDTO;
+import com.example.salesflow.controller.dto.visualizacao.NotaFiscalVisualizacaoDTO;
 import com.example.salesflow.controller.mappers.NotaFiscalMapper;
 import com.example.salesflow.model.NotaFiscal;
 import com.example.salesflow.service.GeradorXmlSimples;
@@ -96,11 +101,45 @@ public class NotaFiscalController {
     public ResponseEntity<String> visualizarNota(@PathVariable Long id) {
         NotaFiscal nf = notaFiscalService.buscaPorId(id);
         
-        if(nf == null){
+        if (nf == null) {
             System.out.println("Nota não encontrada");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    
-        String xml = GeradorXmlSimples.gerarXML(nf);
+
+        NotaFiscalVisualizacaoDTO nfDto = new NotaFiscalVisualizacaoDTO();
+        nfDto.setNumNota(nf.getNumNota());
+        nfDto.setTipoTransacao(nf.getTipoTransacao());
+        nfDto.setValorTotal(nf.getValorTotal());
+        nfDto.setData(nf.getData());
+        
+        DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        nfDto.setFormatada(nfDto.getData().format(formatador));
+        
+        List<ItemNotaFiscalVisualizacaoDTO> itens = nf.getItens().stream()
+            .map(item -> {
+                ItemNotaFiscalVisualizacaoDTO novoItem = new ItemNotaFiscalVisualizacaoDTO();
+                novoItem.setPrecoUnitario(item.getPrecoUnitario());
+                novoItem.setProdutoNome(item.getProduto().getNome());
+                novoItem.setQuantidade(item.getQuantidade());
+                return novoItem;
+            })
+            .collect(Collectors.toList());
+
+        if (nf.getCliente() != null) {
+            nfDto.setClienteNome(nf.getCliente().getNome());
+        }
+        if (nf.getFornecedor() != null) {
+            nfDto.setFornecedorNome(nf.getFornecedor().getNomeFantasia());
+        }
+        if (nf.getUsuario() != null) {
+            nfDto.setUsuarioNome(nf.getUsuario().getLogin());
+        }
+
+        
+        nfDto.setItens(itens);
+
+        String xml = GeradorXmlSimples.gerarXML(nfDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_PLAIN);
 

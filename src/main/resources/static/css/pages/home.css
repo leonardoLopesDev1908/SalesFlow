@@ -45,9 +45,9 @@
 }
 
 .filter-container form{
-    display: flex; /* Habilita o Flexbox */
-    gap: 10px; /* Adiciona um espaço entre os itens */
-    align-items: center; /* Alinha os itens verticalmente ao centro */
+    display: flex; 
+    gap: 10px; 
+    align-items: center; 
     flex-direction: row;
     justify-content: space-between;
 }
