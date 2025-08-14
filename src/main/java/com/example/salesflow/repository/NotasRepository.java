@@ -23,7 +23,6 @@ public interface NotasRepository extends JpaRepository<NotaFiscal, Long>, JpaSpe
 
     List<NotaFiscal> findByFornecedor(Fornecedor fornecedor);
 
-
     @Query("SELECT SUM(nf.valorTotal) FROM NotaFiscal nf " +
            "WHERE nf.tipoTransacao = :tipoTransacao AND MONTH(nf.data) = :month AND YEAR(nf.data) = :year")
     Optional<BigDecimal> findTotalByTransacaoAndMonthAndYear(

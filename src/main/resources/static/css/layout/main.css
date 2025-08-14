@@ -109,7 +109,7 @@ li {
 
 .content {
     padding: var(--spacing-xl);
-    flex-grow: 1; 
+    flex-grow: 0; 
     overflow-y: auto; 
     background-color: var(--background-color-light);
 }

@@ -32,4 +32,7 @@ public class Usuario {
     @Type(ListArrayType.class)
     @Column(name="roles")
     private List<String> roles;
+
+    @Column
+    private String departamento;
 }
