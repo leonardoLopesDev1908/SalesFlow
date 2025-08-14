@@ -79,14 +79,14 @@ public class NotaFiscalController {
     
         Page<NotaFiscal> paginaResultado = notaFiscalService.pesquisa(numNota, tipoTransacao, 
                     clienteCpf, fornecedorCnpj, dataInicio, dataFinal, pagina, tamanhoPagina);
-                    
-                    model.addAttribute("titulo", "Notas");
-                    model.addAttribute("numNota", numNota);
-                    model.addAttribute("tipoTransacao", tipoTransacao);
-                    model.addAttribute("clienteCpf", clienteCpf);
-                    model.addAttribute("fornecedorCnpj", fornecedorCnpj);
-                    model.addAttribute("dataInicio", dataInicio);
-                    model.addAttribute("dataFinal", dataFinal);
+        
+        model.addAttribute("titulo", "Notas");
+        model.addAttribute("numNota", numNota);
+        model.addAttribute("tipoTransacao", tipoTransacao);
+        model.addAttribute("clienteCpf", clienteCpf);
+        model.addAttribute("fornecedorCnpj", fornecedorCnpj);
+        model.addAttribute("dataInicio", dataInicio);
+        model.addAttribute("dataFinal", dataFinal);
         List<NotaFiscalPesquisaDTO> resultado = paginaResultado.getContent()
                     .stream()
                     .map(mapper::toDTO)

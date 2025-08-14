@@ -11,7 +11,6 @@ import org.springframework.data.jpa.domain.Specification;
 import com.example.salesflow.model.Cliente;
 import com.example.salesflow.model.Fornecedor;
 import com.example.salesflow.model.NotaFiscal;
-import com.example.salesflow.model.TransacaoType;
 
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
