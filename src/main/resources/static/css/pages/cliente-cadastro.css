@@ -39,7 +39,7 @@ input[type="email"],
 input[type="endereco"],
 input[type="number"]{
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 2px solid var(--primary-dark);
     border-radius: 6px;
     font-size: 14px;
     background-color: #faf9f9;
@@ -74,12 +74,12 @@ p {
 }
 
 .container-cadastro{
-    background-color: var(--background-color-medium);
+    background-color: var(--background-color-light);
     display: flex;
     flex-direction: column;
-    width: 27rem;
+    width: 37rem;
     padding: 30px 40px;
-    border: 1px solid rgb(153, 153, 153);
+    /* border: 1px solid rgb(153, 153, 153); */
     border-radius: 10px;
 }
 

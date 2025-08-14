@@ -1,7 +1,6 @@
 package com.example.salesflow.controller.viewcontrollers;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -114,7 +113,7 @@ public class NotaFiscalController {
         
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-        nfDto.setFormatada(nfDto.getData().format(formatador));
+        nfDto.setFormatada(nf.getData().format(formatador));
         
         List<ItemNotaFiscalVisualizacaoDTO> itens = nf.getItens().stream()
             .map(item -> {
@@ -135,7 +134,6 @@ public class NotaFiscalController {
         if (nf.getUsuario() != null) {
             nfDto.setUsuarioNome(nf.getUsuario().getLogin());
         }
-
         
         nfDto.setItens(itens);
 

@@ -95,17 +95,19 @@ public class NotasService {
             Usuario usuario = securityService.obterUsuarioLogado();
             notaFiscal.setUsuario(usuario);
             notaFiscal.setValorTotal(valorTotal);
+            
+            NotaFiscal notaSalva = notaFiscalRepository.save(notaFiscal);
 
             /*Nota para criação do PDF*/
-            NotaFiscalVisualizacaoDTO notaDto = notaMapper.toFiscalVisualizacaoDTO(notaFiscal);
-            notaDto.setUsuarioNome(notaFiscal.getUsuario().getLogin());
-            notaDto.setNumNota(notaFiscal.getNumNota());
-            notaDto.setData(notaFiscal.getData());
+            NotaFiscalVisualizacaoDTO notaDto = notaMapper.toFiscalVisualizacaoDTO(notaSalva);
+            notaDto.setUsuarioNome(notaSalva.getUsuario().getLogin());
+            notaDto.setNumNota(notaSalva.getNumNota());
+            notaDto.setData(notaSalva.getData());
 
             DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             notaDto.setFormatada(notaDto.getData().format(formatador));
 
-            List<ItemNotaFiscalVisualizacaoDTO> itensDto = notaFiscal.getItens().stream()   
+            List<ItemNotaFiscalVisualizacaoDTO> itensDto = notaSalva.getItens().stream()   
                 .map(item -> {
                     ItemNotaFiscalVisualizacaoDTO itemNovo = new ItemNotaFiscalVisualizacaoDTO();
                     itemNovo.setPrecoUnitario(item.getPrecoUnitario());
@@ -117,15 +119,14 @@ public class NotasService {
 
             notaDto.setItens(itensDto);
 
-            mailService.enviarEmail(notaFiscal.getCliente().getEmail(), "Confirmação de compra", 
-                        "Olá, " + notaFiscal.getCliente().getNome() + "!" + "\n" + 
+            mailService.enviarEmail(notaSalva.getCliente().getEmail(), "Confirmação de compra", 
+                        "Olá, " + notaSalva.getCliente().getNome() + "!" + "\n" + 
                         "\nMuito obrigado pela preferencia. Conte sempre conosco quando quiser adquirir novas peças para o seu PC!\n" +
                         "Como confirmação de sua compra, segue anexa sua NF-e com os dados da transação e dos itens comprados. Abraços!", notaDto);
 
         }catch(Exception e){
             System.err.print(e.getMessage());
         }
-        notaFiscalRepository.save(notaFiscal);
     }
 
     public NotaFiscal buscaPorId(Long id){
