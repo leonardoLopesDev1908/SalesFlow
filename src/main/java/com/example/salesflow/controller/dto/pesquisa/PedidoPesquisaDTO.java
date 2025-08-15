@@ -1,9 +1,18 @@
 package com.example.salesflow.controller.dto.pesquisa;
 
-public record PedidoPesquisaDTO(
-    Long numPedido,
-    String titulo,
-    String descricao, 
-    String nomeUsuario,
-    String dataFormatada
-) {}
+import lombok.Data;
+
+@Data
+public class PedidoPesquisaDTO {
+    
+    private Long numPedido;
+    private String titulo;
+    private String descricao;
+    private String nomeUsuario;
+    private String departamento;
+    private String dataFormatada;
+    
+    public void setDepartamento(String departamento){
+        this.departamento = departamento;
+    }
+}

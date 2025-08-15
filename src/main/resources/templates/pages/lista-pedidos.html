@@ -1,1 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main_layout}">
 
+    <head>
+        <title>Pedidos - SalesFLow</title>
+    </head>
+    <section layout:fragment="content">
+        <h2>Gerenciamento de Pedidos</h2>
+        <a th:href="@{/pedido}"><button>Novo pedido</nav></button></a>
+        <div class="container-pesquisa">
+            <div class="container-pesquisa-clientes">
+                <form method="get" th:action="@{/pedido/pesquisar}">
+                    <input type="text" name="palavraChave" placeholder="Palavra chave" th:value="${palavraChave != null ? palavraChave : ''}">   
+                    <input type="text" name="loginUsuario" placeholder="Usuario" th:value="${loginUsuario != null ? loginUsuario : ''}">   
+                    <input type="text" name="departamento" placeholder="Departamento" th:value="${departamento != null ? departamento : ''}">   
+                    <input type="text" name="dataInicio" placeholder="Data Inicial" th:value="${dataInicio != null ? dataInicio : ''}">   
+                    <input type="text" name="dataFinal" placeholder="Data Final" th:value="${dataFinal != null ? dataFinal : ''}">   
+                    <button type="submit">Pesquisar</button>
+                </form>
+            </div>
+            <div class="container-table-clientes">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Número do pedido</th>
+                            <th>Usuário</th>
+                            <th>Departamento</th>
+                            <th>Data</th>
+                        </tr> 
+                    </thead>
+                    <tbody>
+                        <tr th:each="pedido : ${pedidos}">
+                            <td th:text="${pedido.numPedido}"></td>
+                            <td th:text="${pedido.nomeUsuario}"></td>
+                            <td th:text="${pedido.departamento}"></td>
+                            <td th:text="${pedido.dataFormatada}"></td>
+                            <!-- <td>
+                                <button type="submit" th:onclick="'abrirPopupPedido()'"><img src="lupa.png" alt="icone de lupa"></button>
+                            </td> -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</html>

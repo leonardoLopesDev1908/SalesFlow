@@ -26,7 +26,10 @@ public class PedidoSpecs {
             if(palavraChave == null || palavraChave.trim().isEmpty()){
                 return cb.conjunction();
             }
-            return cb.like(cb.lower(root.get("palavraChave")), "%" + palavraChave + "%");
+            return cb.or(
+                cb.like(cb.lower(root.get("titulo")), "%" + palavraChave.toLowerCase() + "%"),
+                cb.like(cb.lower(root.get("descricao")), "%" + palavraChave.toLowerCase() + "%")
+            );
         };
     }
     

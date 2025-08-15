@@ -19,6 +19,10 @@
             <!-- Créditos do ícone: https://www.flaticon.com/br/autores/slidicon -->
             <a th:href="@{/notas_fiscais}"><img th:src="@{/images/nota.png}" alt="icone-notafiscal"></a>
         </li>
+        <li th:classappend="${paginaAtual == 'notas_fiscais'} ? 'active' : ''">
+            <!-- Créditos do ícone: https://www.flaticon.com/authors/pixel-perfect -->
+            <a th:href="@{/pedido}"><img th:src="@{/images/pedido.png}" alt="icone-pedido"></a>
+        </li>
     </ul>
 </nav>
 

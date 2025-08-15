@@ -31,7 +31,7 @@ public class PedidoController {
     private final PedidoService service;
     private final PedidoMapper mapper;
 
-    @GetMapping("/solicitar")
+    @GetMapping
     public String solicitacaoPedido(Model model){
         return "pages/solicitar-pedido";
     }
@@ -54,11 +54,11 @@ public class PedidoController {
         }     
     }
 
-    @GetMapping
+    @GetMapping("/pesquisar")
     public String pesquisa(Model model,
                     @RequestParam(value="numPedido", required = false) Long numPedido,
-                    @RequestParam(value="palavra", required = false) String palavraChave,
-                    @RequestParam(value="usuario", required = false) String loginUsuario,
+                    @RequestParam(value="palavraChave", required = false) String palavraChave,
+                    @RequestParam(value="loginUsuario", required = false) String loginUsuario,
                     @RequestParam(value="departamento", required = false) String departamento,
                     @RequestParam(value="dataInicio", required = false) LocalDate dataInicio,
                     @RequestParam(value="dataFinal", required = false) LocalDate dataFinal,
@@ -68,15 +68,20 @@ public class PedidoController {
         Page<Pedido> paginaResultado = service.pesquisa(numPedido, palavraChave, loginUsuario, departamento,
                          dataInicio, dataFinal, pagina, tamanhoPagina);
         
-        model.addAttribute("titulo", "Notas");
+        model.addAttribute("titulo", "Pedidos");
         model.addAttribute("numPedido", numPedido);
-        model.addAttribute("palavra", palavraChave);
+        model.addAttribute("palavraChave", palavraChave);
+        model.addAttribute("loginUsuario", loginUsuario);
         model.addAttribute("departamento", departamento);
         model.addAttribute("dataInicio", dataInicio);
         model.addAttribute("dataFinal", dataFinal);
         List<PedidoPesquisaDTO> resultado = paginaResultado.getContent()
                         .stream()
-                        .map(mapper::toDTO)
+                        .map(pedido -> {
+                            PedidoPesquisaDTO dto = mapper.toDTO(pedido);
+                            dto.setDepartamento(pedido.getUsuario().getDepartamento());
+                            return dto;
+                        })
                         .toList();
         model.addAttribute("pedidos", resultado);
 

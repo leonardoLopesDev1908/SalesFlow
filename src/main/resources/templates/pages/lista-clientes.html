@@ -2,46 +2,46 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/main_layout}">
-      <head>
-          <title>Clientes - SalesFlow</title>
-        </head>
-        <section layout:fragment="content">
-            <body>
-                <h2>Lista de Clientes</h2>
-                <a th:href="@{/clientes/cadastro}"><button>Novo cliente</button></a>
-                <div class="container-pesquisa"> 
-                    <div class="container-pesquisa-clientes">
-                        <form method="get" th:action="@{/clientes}">
-                            <input type="text" name="nome" placeholder="Nome" th:value="${nome != null ? nome : ''}" />
-                            <input type="text" class="mask-cpf" name="cpf" placeholder="CPF" th:value="${cpf != null ? cpf : ''}" />
-                            <input type="text" name="email" placeholder="Email" th:value="${email != null ? email : ''}" />
-                            <input type="text" class="mask-telefone" name="telefone" placeholder="Telefone" th:value="${telefone != null ? telefone : ''}"/>
-                            <button type="submit">Pesquisar</button>
-                        </form>
-                    </div>
-                    <div class="container-table-clientes">
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>CPF</th>
-                                <th>Email</th>
-                                <th>Telefone</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="cliente : ${clientes}">
-                                <td th:text="${cliente.nome}">Nome</td>
-                                <td th:text="${cliente.cpf}">CPF</td>
-                                <td th:text="${cliente.email}">Email</td>
-                                <td th:text="${cliente.telefone}">Telefone</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+    <head>
+        <title>Clientes - SalesFlow</title>
+    </head>
+    <section layout:fragment="content">
+        <body>
+            <h2>Lista de Clientes</h2>
+            <a th:href="@{/clientes/cadastro}"><button>Novo cliente</button></a>
+            <div class="container-pesquisa"> 
+                <div class="container-pesquisa-clientes">
+                    <form method="get" th:action="@{/clientes}">
+                        <input type="text" name="nome" placeholder="Nome" th:value="${nome != null ? nome : ''}" />
+                        <input type="text" class="mask-cpf" name="cpf" placeholder="CPF" th:value="${cpf != null ? cpf : ''}" />
+                        <input type="text" name="email" placeholder="Email" th:value="${email != null ? email : ''}" />
+                        <input type="text" class="mask-telefone" name="telefone" placeholder="Telefone" th:value="${telefone != null ? telefone : ''}"/>
+                        <button type="submit">Pesquisar</button>
+                    </form>
                 </div>
-                <script src="https://unpkg.com/imask"></script>
-                <script th:src="@{/js/masks.js}"></script>
-            </body>
+                <div class="container-table-clientes">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>Email</th>
+                            <th>Telefone</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="cliente : ${clientes}">
+                            <td th:text="${cliente.nome}">Nome</td>
+                            <td th:text="${cliente.cpf}">CPF</td>
+                            <td th:text="${cliente.email}">Email</td>
+                            <td th:text="${cliente.telefone}">Telefone</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <script src="https://unpkg.com/imask"></script>
+            <script th:src="@{/js/masks.js}"></script>
+        </body>
     </section>
 </html>

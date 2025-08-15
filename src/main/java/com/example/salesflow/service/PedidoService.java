@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -32,10 +31,13 @@ public class PedidoService {
     private final SecurityService securityService;
 
     public Pedido salvar(PedidoCadastroDTO dto){
+        System.out.println("ENTROU NO SERVICE");
         Pedido pedido = mapper.toEntity(dto);
+        pedido.setStatus("EM ANÁLISE");
 
         Usuario usuario = securityService.obterUsuarioLogado();
         pedido.setUsuario(usuario);
+
 
         return repository.save(pedido);
     }
@@ -50,21 +52,19 @@ public class PedidoService {
         if(numPedido != null && !(numPedido.toString()).isEmpty()){
             specs = (specs == null) ? numPedidoEqual(numPedido) : specs.and(numPedidoEqual(numPedido));
         }
-        if(palavraChave != null && !(palavraChave.toString()).isEmpty()){
+        if(palavraChave != null && !palavraChave.isEmpty()){
             specs = (specs == null) ? palavraLike(palavraChave) : specs.and(palavraLike(palavraChave));
         }
-        if(loginUsuario != null && !(loginUsuario.toString()).isEmpty()){
+        if(loginUsuario != null && !loginUsuario.isEmpty()){
             specs = (specs == null) ? loginUsuarioEqual(loginUsuario) : specs.and(loginUsuarioEqual(loginUsuario));
         }
-        if(departamento != null && !(departamento.toString()).isEmpty()){
+        if(departamento != null && !departamento.isEmpty()){
             specs = (specs == null) ? departamentoEqual(departamento) : specs.and(departamentoEqual(departamento));
         }
         if(dataInicio != null || dataFinal != null){
             specs = (specs == null) ? PedidoSpecs.intervaloSolicitacaoIsBetween(dataInicio, dataFinal) : 
                                         specs.and(PedidoSpecs.intervaloSolicitacaoIsBetween(dataInicio, dataFinal));
         }
-        Pageable pageRequest = PageRequest.of(pagina, tamanhoPagina);
-
-        return repository.findAll(specs, pageRequest);
+        return repository.findAll(specs, PageRequest.of(pagina, tamanhoPagina));
     }
 }
