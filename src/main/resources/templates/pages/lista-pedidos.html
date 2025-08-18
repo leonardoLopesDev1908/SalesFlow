@@ -14,7 +14,7 @@
                 <form method="get" th:action="@{/pedido/pesquisar}">
                     <input type="text" name="palavraChave" placeholder="Palavra chave" th:value="${palavraChave != null ? palavraChave : ''}">   
                     <input type="text" name="loginUsuario" placeholder="Usuario" th:value="${loginUsuario != null ? loginUsuario : ''}">   
-                    <input type="text" name="departamento" placeholder="Departamento" th:value="${departamento != null ? departamento : ''}">   
+                    <input type="text" name="departamento" placeholder="DeTpartamento" th:value="${departamento != null ? departamento : ''}">   
                     <input type="text" name="dataInicio" placeholder="Data Inicial" th:value="${dataInicio != null ? dataInicio : ''}">   
                     <input type="text" name="dataFinal" placeholder="Data Final" th:value="${dataFinal != null ? dataFinal : ''}">   
                     <button type="submit">Pesquisar</button>
@@ -25,24 +25,43 @@
                     <thead>
                         <tr>
                             <th>Número do pedido</th>
+                            <th>Titulo</th>
                             <th>Usuário</th>
                             <th>Departamento</th>
                             <th>Data</th>
+                            <th></th>
                         </tr> 
                     </thead>
                     <tbody>
                         <tr th:each="pedido : ${pedidos}">
                             <td th:text="${pedido.numPedido}"></td>
+                            <td th:text="${pedido.titulo}"></td>
                             <td th:text="${pedido.nomeUsuario}"></td>
                             <td th:text="${pedido.departamento}"></td>
                             <td th:text="${pedido.dataFormatada}"></td>
-                            <!-- <td>
-                                <button type="submit" th:onclick="'abrirPopupPedido()'"><img src="lupa.png" alt="icone de lupa"></button>
-                            </td> -->
+                            <td>
+                                <button type="button" th:onclick="'abrirPopupPedido('+ ${pedido.numPedido} +')'"><img th:src="@{/images/lupa.png}" alt="icone de lupa"></button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
+                <div id="pedidoModal" class="modal">
+                      <div class="modal-content">
+                        <span class="close" onclick="fecharPopupPedido()">&times;</span>
+                        <h3>Detalhes do Pedido</h3>
+                        <p><strong>Número: </strong> <span id="modalNumPedido"></span></p>
+                        <p><strong>Título: </strong> <span id="modalTitulo"></span></p>
+                        <p><strong>Usuário: </strong> <span id="modalUsuario"></span></p>
+                        <p><strong>Departamento: </strong> <span id="modalDepartamento"></span></p>
+                        <p><strong>Data: </strong> <span id="modalData"></span></p>
+                        <p><strong>Status: </strong> <span id="modalStatus"></span></p>
+                        <p><strong>Descrição: </strong> <span id="modalDescricao"></span></p>
+                        <!-- <button type="button" th:onclick="'aprovarPedido('+${pedido.numPedido}+')'" style="background-color: green;"></button> -->
+                        <!-- <button type="button" th:onclick="'negarPedido('+ ${pedido.numPedido}+')'" style="background-color: red;"></button> -->
+                    </div>
+                </div>
             </div>
         </div>
     </section>
+    <script th:src="@{/js/pedidos.js}"></script>
 </html>

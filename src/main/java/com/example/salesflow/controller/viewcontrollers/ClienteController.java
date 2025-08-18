@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.salesflow.controller.dto.cadastro.ClienteCadastroDTO;
 import com.example.salesflow.controller.dto.pesquisa.ClientePesquisaDTO;
 import com.example.salesflow.controller.mappers.ClienteMapper;
+import com.example.salesflow.exceptions.RegistroDuplicadoException;
 import com.example.salesflow.model.Cliente;
 import com.example.salesflow.service.ClienteService;
 
@@ -45,7 +46,7 @@ public class ClienteController {
         try{
             clienteService.salvar(clienteMapper.toEntity(dto));
             model.addAttribute("mensagem", "Cliente cadastrado com sucesso");
-        } catch(IllegalArgumentException e){
+        } catch(RegistroDuplicadoException e){
             System.out.println(e.getMessage());
             model.addAttribute("erro", e.getMessage());
         }

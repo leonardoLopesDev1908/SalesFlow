@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.example.salesflow.model.Pedido;
+import com.example.salesflow.model.Usuario;
 
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;

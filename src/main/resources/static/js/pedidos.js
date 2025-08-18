@@ -1,87 +1,47 @@
-function abrirPopupPedido(id) {
-  fetch('/pedido/' + id + '/visualizar')
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Pedido não encontrado ou erro no servidor.');
-      }
-      return response.text();
-    })
-    .then(xml => {
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(xml, "application/xml");
+(function () {
+  function abrirPopupPedido(numPedido) {
+    console.log("Abrindo pedido:", numPedido); // debug
 
-      const numNota = xmlDoc.getElementsByTagName("numNota")[0]?.textContent || "";
-      const tipo = xmlDoc.getElementsByTagName("tipoTransacao")[0]?.textContent || "";
-      const valor = xmlDoc.getElementsByTagName("valorTotal")[0]?.textContent || "";
-      const data = xmlDoc.getElementsByTagName("data")[0]?.textContent || "";
-      const formatada = xmlDoc.getElementsByTagName("formatada")[0]?.textContent || "";
-      
-      const cliente = xmlDoc.getElementsByTagName("clienteNome")[0]?.textContent || "";
-      const fornecedor = xmlDoc.getElementsByTagName("fornecedorNome")[0]?.textContent || "";
-      const usuario = xmlDoc.getElementsByTagName("usuarioNome")[0]?.textContent || "";
+    const modal = document.getElementById("pedidoModal");
+    fetch(`/pedido/${numPedido}`)
+      .then(r => { if (!r.ok) throw new Error("Erro ao buscar pedido"); return r.json(); })
+      .then(p => {
+        document.getElementById("modalNumPedido").innerText = p.numPedido ?? "";
+        document.getElementById("modalTitulo").innerText = p.titulo ?? "";
+        document.getElementById("modalUsuario").innerText = p.nomeUsuario ?? "";
+        document.getElementById("modalDepartamento").innerText = p.departamento ?? "";
+        document.getElementById("modalData").innerText = p.dataFormatada ?? "";
+        document.getElementById("modalStatus").innerText = p.status ?? "";
+        document.getElementById("modalDescricao").innerText = p.descricao ?? "";
+        modal.style.display = "block";
+      })
+      .catch(err => alert("Não foi possível carregar o pedido: " + err.message));
+  }
 
-      const itens = xmlDoc.getElementsByTagName("item");
-      let linhasItens = "";
-      for (let i = 0; i < itens.length; i++) {
-        const nome = itens[i].getElementsByTagName("produtoNome")[0]?.textContent || "Produto não encontrado";
-        const quantidade = itens[i].getElementsByTagName("quantidade")[0]?.textContent || "0";
-        const precoUnitario = itens[i].getElementsByTagName("precoUnitario")[0]?.textContent || "0.00";
-        const totalItem = (parseFloat(precoUnitario) * parseInt(quantidade)).toFixed(2);
+  function fecharPopupPedido() {
+    document.getElementById("pedidoModal").style.display = "none";
+  }
 
-        linhasItens += `
-          <tr>
-            <td>${nome}</td>
-            <td>${quantidade}</td>
-            <td>R$ ${precoUnitario}</td>
-            <td>R$ ${totalItem}</td>
-          </tr>
-        `;
-      }
+  function negarPedido(numPedido){
+    fetch(`pedido/${numPedido}/status?status=NEGADO`, {method: "PUT"})
+      .then(r => {
+        if(!r.ok) throw new Error("Erro ao negar o pedido");
+        document.getElementById("modalStatus").textContent = "NEGADO"
+      })
+      .catch(err => alert(err.message));
+  }
 
-      const clienteOuFornecedor = (tipo === "VENDA") ? `<strong>Cliente:</strong> ${cliente}` : `<strong>Fornecedor:</strong> ${fornecedor}`;
+  function aprovarPedido(numPedido){
+     fetch(`/pedido/${numPedido}/status?status=APROVADO`, { method: "PUT" })
+      .then(r => {
+        if (!r.ok) throw new Error("Erro ao aprovar pedido");
+        document.getElementById("modalStatus").textContent = "APROVADO";
+      })
+      .catch(err => alert(err.message));
+  }
 
-      const danfeHTML = `
-        <html>
-        <head>
-          <title>Nota Fiscal ${numNota}</title>
-          <style>
-            body { font-family: Arial, sans-serif; padding: 20px; }
-            h2 { text-align: center; }
-            table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-            th, td { border: 1px solid #000; padding: 8px; text-align: left; }
-          </style>
-        </head>
-        <body>
-          <h2>DANFE - Documento Auxiliar da Nota Fiscal Eletrônica</h2>
-          <p><strong>Número:</strong> ${numNota}</p>
-          <p><strong>Tipo:</strong> ${tipo}</p>
-          <p><strong>Data:</strong> ${formatada}</p>
-          <p>${clienteOuFornecedor}</p>
-          <p><strong>Valor Total:</strong> R$ ${valor}</p>
-          <table>
-            <thead>
-              <tr>
-                <th>Produto</th>
-                <th>Quantidade</th>
-                <th>Preço Unitário</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${linhasItens}
-            </tbody>
-          </table>
-          <p><strong>Usuário:</strong> ${usuario}</p>
-        </body>
-        </html>
-      `;
 
-      const popup = window.open('', 'Nota Fiscal', 'width=800,height=600,scrollbars=yes');
-      popup.document.write(danfeHTML);
-      popup.document.close();
-    })
-    .catch(error => {
-      console.error("Erro ao carregar a nota fiscal:", error);
-      alert("Erro ao carregar a nota fiscal.");
-    });
-}
+  // expõe no escopo global
+  window.abrirPopupPedido = abrirPopupPedido;
+  window.fecharPopupPedido = fecharPopupPedido;
+})();

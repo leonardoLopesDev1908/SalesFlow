@@ -4,8 +4,10 @@ import java.time.LocalDate;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.salesflow.controller.dto.cadastro.PedidoCadastroDTO;
 import com.example.salesflow.controller.mappers.PedidoMapper;
@@ -31,22 +33,20 @@ public class PedidoService {
     private final SecurityService securityService;
 
     public Pedido salvar(PedidoCadastroDTO dto){
-        System.out.println("ENTROU NO SERVICE");
+
         Pedido pedido = mapper.toEntity(dto);
         pedido.setStatus("EM ANÁLISE");
 
         Usuario usuario = securityService.obterUsuarioLogado();
         pedido.setUsuario(usuario);
 
-
         return repository.save(pedido);
     }
-
 
     public Page<Pedido> pesquisa(
                 Long numPedido, String palavraChave, String loginUsuario, String departamento,
                 LocalDate dataInicio, LocalDate dataFinal, Integer pagina, Integer tamanhoPagina){
-
+        
         Specification<Pedido> specs = null;
 
         if(numPedido != null && !(numPedido.toString()).isEmpty()){
@@ -65,6 +65,19 @@ public class PedidoService {
             specs = (specs == null) ? PedidoSpecs.intervaloSolicitacaoIsBetween(dataInicio, dataFinal) : 
                                         specs.and(PedidoSpecs.intervaloSolicitacaoIsBetween(dataInicio, dataFinal));
         }
-        return repository.findAll(specs, PageRequest.of(pagina, tamanhoPagina));
+        Pageable pageable = PageRequest.of(pagina, tamanhoPagina);
+
+        return repository.findAll(specs, pageable);
+    }
+
+    public Pedido buscarPorId(Long id){
+        return repository.findById(id).orElse(null);
+    }
+
+    @Transactional
+    public void atualizarStatus(Long id, String status){
+        Pedido pedido = repository.findById(id).orElse(null); 
+        pedido.setStatus(status);
+        repository.save(pedido);
     }
 }
