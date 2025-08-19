@@ -66,4 +66,8 @@ public class PedidoSpecs {
             return cb.and(predicates.toArray(new Predicate[0]));
         };
     }
+
+    public static Specification<Pedido> statusEqual(String status){
+        return (root, query, cb) -> cb.equal(root.get("status"), status);
+    }
 }

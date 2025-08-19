@@ -13,6 +13,10 @@
         document.getElementById("modalData").innerText = p.dataFormatada ?? "";
         document.getElementById("modalStatus").innerText = p.status ?? "";
         document.getElementById("modalDescricao").innerText = p.descricao ?? "";
+
+        document.getElementById("btnAprovar").onclick = () =>aprovarPedido(p.numPedido);
+        document.getElementById("btnNegar").onclick = () =>negarPedido(p.numPedido);
+
         modal.style.display = "block";
       })
       .catch(err => alert("Não foi possível carregar o pedido: " + err.message));
@@ -23,7 +27,7 @@
   }
 
   function negarPedido(numPedido){
-    fetch(`pedido/${numPedido}/status?status=NEGADO`, {method: "PUT"})
+    fetch(`/pedido/${numPedido}/status?novoStatus=NEGADO`, {method: "PUT"})
       .then(r => {
         if(!r.ok) throw new Error("Erro ao negar o pedido");
         document.getElementById("modalStatus").textContent = "NEGADO"
@@ -32,7 +36,7 @@
   }
 
   function aprovarPedido(numPedido){
-     fetch(`/pedido/${numPedido}/status?status=APROVADO`, { method: "PUT" })
+     fetch(`/pedido/${numPedido}/status?novoStatus=APROVADO`, { method: "PUT" })
       .then(r => {
         if (!r.ok) throw new Error("Erro ao aprovar pedido");
         document.getElementById("modalStatus").textContent = "APROVADO";
@@ -40,8 +44,6 @@
       .catch(err => alert(err.message));
   }
 
-
-  // expõe no escopo global
   window.abrirPopupPedido = abrirPopupPedido;
   window.fecharPopupPedido = fecharPopupPedido;
 })();

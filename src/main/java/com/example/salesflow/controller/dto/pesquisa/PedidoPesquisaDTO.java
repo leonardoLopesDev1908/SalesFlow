@@ -11,6 +11,7 @@ public class PedidoPesquisaDTO {
     private String nomeUsuario;
     private String departamento;
     private String dataFormatada;
+    private String status;
     
     public void setDepartamento(String departamento){
         this.departamento = departamento;

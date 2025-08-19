@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/main_layout}">
       
     <head>
@@ -10,7 +11,7 @@
     <body>
         <main layout:fragment="content">
             <h2>Solicitação de Pedidos</h2>
-            <a th:href="@{/pedido/pesquisar}"><button>Gerenciar pedidos</button></a>
+            <a th:href="@{/pedido/pesquisar}" sec:authorize="hasAuthority('GERENTE')"><button>Gerenciar pedidos</button></a>
             <div class="container-cadastro">
                 <form method="post" action="/pedido/solicitar_pedido">
                     <input type="text" name="titulo" placeholder="Titulo" th:value="${pedido?.titulo}">

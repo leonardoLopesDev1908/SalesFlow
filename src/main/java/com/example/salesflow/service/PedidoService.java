@@ -19,6 +19,7 @@ import static com.example.salesflow.repository.PedidoSpecs.departamentoEqual;
 import static com.example.salesflow.repository.PedidoSpecs.loginUsuarioEqual;
 import static com.example.salesflow.repository.PedidoSpecs.numPedidoEqual;
 import static com.example.salesflow.repository.PedidoSpecs.palavraLike;
+import static com.example.salesflow.repository.PedidoSpecs.statusEqual;
 import com.example.salesflow.security.SecurityService;
 
 import lombok.RequiredArgsConstructor;
@@ -45,7 +46,7 @@ public class PedidoService {
 
     public Page<Pedido> pesquisa(
                 Long numPedido, String palavraChave, String loginUsuario, String departamento,
-                LocalDate dataInicio, LocalDate dataFinal, Integer pagina, Integer tamanhoPagina){
+                LocalDate dataInicio, LocalDate dataFinal, String status, Integer pagina, Integer tamanhoPagina){
         
         Specification<Pedido> specs = null;
 
@@ -65,6 +66,10 @@ public class PedidoService {
             specs = (specs == null) ? PedidoSpecs.intervaloSolicitacaoIsBetween(dataInicio, dataFinal) : 
                                         specs.and(PedidoSpecs.intervaloSolicitacaoIsBetween(dataInicio, dataFinal));
         }
+        if(status != null && !status.isEmpty()){
+            specs = (specs == null) ? statusEqual(status) : specs.and(statusEqual(status));
+        }
+
         Pageable pageable = PageRequest.of(pagina, tamanhoPagina);
 
         return repository.findAll(specs, pageable);
@@ -76,6 +81,7 @@ public class PedidoService {
 
     @Transactional
     public void atualizarStatus(Long id, String status){
+        System.out.println("SERVICE");
         Pedido pedido = repository.findById(id).orElse(null); 
         pedido.setStatus(status);
         repository.save(pedido);

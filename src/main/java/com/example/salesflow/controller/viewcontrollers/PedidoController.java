@@ -67,17 +67,19 @@ public class PedidoController {
                     @RequestParam(value="departamento", required = false) String departamento,
                     @RequestParam(value="dataInicio", required = false) LocalDate dataInicio,
                     @RequestParam(value="dataFinal", required = false) LocalDate dataFinal,
+                    @RequestParam(value="status", required = false) String status,
                     @RequestParam(value="pagina", defaultValue = "0") Integer pagina,
                     @RequestParam(value="tamanhoPagina", defaultValue= "10") Integer tamanhoPagina){
     
         Page<Pedido> paginaResultado = service.pesquisa(numPedido, palavraChave, loginUsuario, departamento,
-                         dataInicio, dataFinal, pagina, tamanhoPagina);
+                         dataInicio, dataFinal, status, pagina, tamanhoPagina);
         
         model.addAttribute("titulo", "Pedidos");
         model.addAttribute("numPedido", numPedido);
         model.addAttribute("palavraChave", palavraChave);
         model.addAttribute("loginUsuario", loginUsuario);
         model.addAttribute("departamento", departamento);
+        model.addAttribute("status", departamento);
         model.addAttribute("dataInicio", dataInicio);
         model.addAttribute("dataFinal", dataFinal);
 
@@ -116,9 +118,8 @@ public class PedidoController {
     @PutMapping("{id}/status")
     @ResponseBody
     public ResponseEntity<Void> atualizarPedido(@PathVariable Long id, @RequestParam String novoStatus){
+        System.out.println("CONTROLLER");
         service.atualizarStatus(id, novoStatus);
         return ResponseEntity.ok().build();
     }
-                    
-
 }
