@@ -51,32 +51,34 @@ public class ClienteController {
             model.addAttribute("erro", e.getMessage());
         }
         model.addAttribute("cliente", dto);
+        model.addAttribute("currentPage", "clientes");
         
         return "pages/cliente-cadastro";
     }
-
+    
     @GetMapping
     public String pesquisar(Model model,
-                            @RequestParam(value= "nome", required=false) String nome,
-                            @RequestParam(value= "cpf", required=false) String cpf,
-                            @RequestParam(value= "email", required=false) String email,
-                            @RequestParam(value= "telefone", required=false) String telefone,
-                            @RequestParam(value= "pagina", defaultValue="0")Integer pagina,
-                            @RequestParam(value= "tamanho-pagina", defaultValue="10")Integer tamanhoPagina
-                            ){
-
+    @RequestParam(value= "nome", required=false) String nome,
+    @RequestParam(value= "cpf", required=false) String cpf,
+    @RequestParam(value= "email", required=false) String email,
+    @RequestParam(value= "telefone", required=false) String telefone,
+    @RequestParam(value= "pagina", defaultValue="0")Integer pagina,
+    @RequestParam(value= "tamanho-pagina", defaultValue="10")Integer tamanhoPagina
+    ){
+        
         Page<Cliente> clientes = clienteService.pesquisa(nome, cpf, email, telefone, pagina, tamanhoPagina);
-                                
+        
         List<ClientePesquisaDTO> clientesDto = clientes.getContent().stream()
-                .map(clienteMapper::toDTO)
-                .toList();
-
+        .map(clienteMapper::toDTO)
+        .toList();
+        
         model.addAttribute("titulo", "Clientes");
         model.addAttribute("clientes", clientesDto);
         model.addAttribute("nome", nome);
         model.addAttribute("cpf", cpf);
         model.addAttribute("email", email);
         model.addAttribute("telefone", telefone);
+        model.addAttribute("currentPage", "clientes");
 
         return "pages/lista-clientes";    
     }

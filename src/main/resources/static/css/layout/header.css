@@ -1,5 +1,5 @@
 .header {
-    background-color: rgb(226, 226, 226);
+    background-color: var(--background-color-mid-dark);
     color: var(--text-color-dark);
     padding: var(--spacing-md) var(--spacing-xl);
     box-shadow: var(--shadow-sm);

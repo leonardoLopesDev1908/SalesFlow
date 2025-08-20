@@ -49,44 +49,46 @@ public class ProdutoController {
         } catch (IllegalArgumentException e) {
             model.addAttribute("erro", e.getMessage());
         }
-
+        
+        model.addAttribute("currentPage", "produtos");
         model.addAttribute("produto", dto);
         return "pages/produto-cadastro";
     }
-
+    
     @GetMapping("{id}")
     public ResponseEntity<ProdutoPesquisaDTO> obterPorId(@PathVariable("id") String id){
         var idProduto = Long.valueOf(id);
-
+        
         return produtoService   
-            .obterPorId(idProduto)
-            .map(produto -> {
-                ProdutoPesquisaDTO dto = produtoMapper.toDTO(produto);
-                return ResponseEntity.ok(dto);
-            }).orElseGet(() -> ResponseEntity.notFound().build());
+        .obterPorId(idProduto)
+        .map(produto -> {
+            ProdutoPesquisaDTO dto = produtoMapper.toDTO(produto);
+            return ResponseEntity.ok(dto);
+        }).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
+    
     @GetMapping
     public String pesquisar(Model model,
-                            @RequestParam(value= "nome", required=false) String nome,
-                            @RequestParam(value= "descricao", required=false) String descricao,
-                            @RequestParam(value= "marca", required=false) String marca,
-                            @RequestParam(value= "pagina", defaultValue="0") Integer pagina,
-                            @RequestParam(value= "tamanhoPagina", defaultValue="10") Integer tamanhoPagina){
+    @RequestParam(value= "nome", required=false) String nome,
+    @RequestParam(value= "descricao", required=false) String descricao,
+    @RequestParam(value= "marca", required=false) String marca,
+    @RequestParam(value= "pagina", defaultValue="0") Integer pagina,
+    @RequestParam(value= "tamanhoPagina", defaultValue="10") Integer tamanhoPagina){
         
         Page<Produto> produtos = produtoService.pesquisa(nome, descricao, marca, pagina, tamanhoPagina);
         
         List<ProdutoPesquisaDTO> produtosDto = produtos.getContent().stream()
-                                .map(produtoMapper::toDTO)
-                                .toList();
+        .map(produtoMapper::toDTO)
+        .toList();
         
         model.addAttribute("titulo", "Fornecedores");
         model.addAttribute("produtos", produtosDto);
         model.addAttribute("nome", nome);
         model.addAttribute("descricao", descricao);
         model.addAttribute("marca", marca);
-            
+        model.addAttribute("currentPage", "produtos");
+        
         return "pages/lista-produtos";
     }
-
+    
 }

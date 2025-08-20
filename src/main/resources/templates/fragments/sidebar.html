@@ -1,25 +1,26 @@
 <nav class="sidebar" th:fragment="sidebar">
     <ul>
-        <li>
+        <li th:classappend="${currentPage == 'home'} ? 'active' : ''">
             <!-- Créditos do ícone: https://www.flaticon.com/br/autores/iconmarketpk - grafico -->
-            <a th:href="@{/}"><img th:src="@{/images/grafico.png}" alt="icone-grafico"></a></li>
-        <li th:classappend="${paginaAtual == 'clientes'} ? 'active' : ''">
+             <a th:href="@{/}"><img th:src="@{/images/grafico.png}" alt="icone-grafico"></a>
+        </li>
+        <li th:classappend="${currentPage == 'clientes'} ? 'active' : ''">
             <!-- Créditos do ícone: https://www.flaticon.com/br/autores/freepik -->
             <a th:href="@{/clientes}"><img th:src="@{/images/cliente.png}" alt="icone-cliente"></a>
         </li>
-        <li th:classappend="${paginaAtual == 'produtos'} ? 'active' : ''">
+        <li th:classappend="${currentPage == 'produtos'} ? 'active' : ''">
             <!-- Créditos do ícone: https://www.flaticon.com/br/autores/prettycons -->
             <a th:href="@{/produtos}"><img th:src="@{/images/placa-de-video.png}" alt="icone-placadevideo"></a>
         </li>
-        <li th:classappend="${paginaAtual == 'fornecedores'} ? 'active' : ''">
+        <li th:classappend="${currentPage == 'fornecedores'} ? 'active' : ''">
             <!-- Créditos do ícone: https://www.flaticon.com/br/autores/freepik -->
             <a th:href="@{/fornecedores}"><img th:src="@{/images/correio.png}" alt="icone-fornecedor"></a>
         </li>
-        <li th:classappend="${paginaAtual == 'notas_fiscais'} ? 'active' : ''">
+        <li th:classappend="${currentPage == 'notas_fiscais'} ? 'active' : ''">
             <!-- Créditos do ícone: https://www.flaticon.com/br/autores/slidicon -->
             <a th:href="@{/notas_fiscais}"><img th:src="@{/images/nota.png}" alt="icone-notafiscal"></a>
         </li>
-        <li th:classappend="${paginaAtual == 'notas_fiscais'} ? 'active' : ''">
+        <li th:classappend="${currentPage == 'pedido'} ? 'active' : ''">
             <!-- Créditos do ícone: https://www.flaticon.com/authors/pixel-perfect -->
             <a th:href="@{/pedido}"><img th:src="@{/images/pedido.png}" alt="icone-pedido"></a>
         </li>

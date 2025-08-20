@@ -46,6 +46,7 @@ public class HomeController {
         model.addAttribute("compras", dados.get(1));
         model.addAttribute("labels", labels);
         model.addAttribute("valores", valores);
+        model.addAttribute("currentPage", "home");
 
         return "pages/home";
     }

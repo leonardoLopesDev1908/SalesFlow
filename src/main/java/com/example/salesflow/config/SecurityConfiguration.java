@@ -29,6 +29,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll();
                     authorize.requestMatchers("/login/**").permitAll();
+                    authorize.requestMatchers("/pedido/pesquisar").hasAuthority("GERENTE");
                     authorize.anyRequest().authenticated();
                 })
                 .formLogin(form -> 

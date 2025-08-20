@@ -52,38 +52,39 @@ public class FornecedorController {
             model.addAttribute("erro", e.getMessage());
         }
         model.addAttribute("fornecedor", dto);
+        model.addAttribute("currentPage", "fornecedores");
         
         return "pages/fornecedor-cadastro";
     }
-
+    
     @GetMapping("{id}")
     public ResponseEntity<FornecedorPesquisaDTO> obterPorId(@PathVariable("id") String id){
         var idFornecedor = UUID.fromString(id);
-
+        
         return fornecedorService
-                .obterPorId(idFornecedor)
-                .map(fornecedor -> {
-                    FornecedorPesquisaDTO dto = fornecedorMapper.toDTO(fornecedor);
-                    return ResponseEntity.ok(dto);
-                }).orElseGet(() -> ResponseEntity.notFound().build());
+        .obterPorId(idFornecedor)
+        .map(fornecedor -> {
+            FornecedorPesquisaDTO dto = fornecedorMapper.toDTO(fornecedor);
+            return ResponseEntity.ok(dto);
+        }).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
+    
     @GetMapping
     public String pesquisar(Model model,
-                            @RequestParam(value= "nomeFantasia", required=false) String nomeFantasia,
-                            @RequestParam(value= "razaoSocial", required=false) String razaoSocial,
-                            @RequestParam(value= "cnpj", required=false) String cnpj,
-                            @RequestParam(value= "email", required=false) String email,
-                            @RequestParam(value= "telefone", required=false) String telefone,
-                            @RequestParam(value= "pagina", defaultValue="0") Integer pagina,
-                            @RequestParam(value= "tamanhoPagina", defaultValue="10") Integer tamanhoPagina){
+    @RequestParam(value= "nomeFantasia", required=false) String nomeFantasia,
+    @RequestParam(value= "razaoSocial", required=false) String razaoSocial,
+    @RequestParam(value= "cnpj", required=false) String cnpj,
+    @RequestParam(value= "email", required=false) String email,
+    @RequestParam(value= "telefone", required=false) String telefone,
+    @RequestParam(value= "pagina", defaultValue="0") Integer pagina,
+    @RequestParam(value= "tamanhoPagina", defaultValue="10") Integer tamanhoPagina){
         
         Page<Fornecedor> fornecedores = fornecedorService.pesquisa(nomeFantasia, razaoSocial, cnpj, email, 
-                                                telefone, pagina, tamanhoPagina);
+        telefone, pagina, tamanhoPagina);
         
         List<FornecedorPesquisaDTO> fornecedoresDto = fornecedores.getContent().stream()
-                                .map(fornecedorMapper::toDTO)
-                                .toList();
+        .map(fornecedorMapper::toDTO)
+        .toList();
         
         model.addAttribute("titulo", "Fornecedores");
         model.addAttribute("fornecedores", fornecedoresDto);
@@ -92,7 +93,8 @@ public class FornecedorController {
         model.addAttribute("cnpj", cnpj);
         model.addAttribute("email", email);
         model.addAttribute("telefone", telefone);
-            
+        model.addAttribute("currentPage", "fornecedores");
+        
         return "pages/lista-fornecedores";
     }
 }

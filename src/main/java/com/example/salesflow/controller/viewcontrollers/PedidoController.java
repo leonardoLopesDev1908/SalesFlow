@@ -38,6 +38,7 @@ public class PedidoController {
 
     @GetMapping
     public String solicitacaoPedido(Model model){
+        model.addAttribute("currentPage", "pedido");
         return "pages/solicitar-pedido";
     }
 
@@ -51,14 +52,16 @@ public class PedidoController {
         try{
             service.salvar(dto);
             model.addAttribute("mensagem", "Solicitação feita!");
+            model.addAttribute("currentPage", "pedido");
             return "pages/solicitar-pedido";
         }catch (IllegalArgumentException e){
             System.err.print(e.getMessage());
             model.addAttribute("erro", e.getMessage());
+            model.addAttribute("currentPage", "pedido");
             return "pages/solicitar-pedido";
         }     
     }
-
+    
     @GetMapping("/pesquisar")
     public String pesquisa(Model model,
                     @RequestParam(value="numPedido", required = false) Long numPedido,
@@ -70,9 +73,9 @@ public class PedidoController {
                     @RequestParam(value="status", required = false) String status,
                     @RequestParam(value="pagina", defaultValue = "0") Integer pagina,
                     @RequestParam(value="tamanhoPagina", defaultValue= "10") Integer tamanhoPagina){
-    
+        
         Page<Pedido> paginaResultado = service.pesquisa(numPedido, palavraChave, loginUsuario, departamento,
-                         dataInicio, dataFinal, status, pagina, tamanhoPagina);
+        dataInicio, dataFinal, status, pagina, tamanhoPagina);
         
         model.addAttribute("titulo", "Pedidos");
         model.addAttribute("numPedido", numPedido);
@@ -82,21 +85,22 @@ public class PedidoController {
         model.addAttribute("status", departamento);
         model.addAttribute("dataInicio", dataInicio);
         model.addAttribute("dataFinal", dataFinal);
-
+        
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy  HH:mm");
-
+        
         List<PedidoPesquisaDTO> resultado = paginaResultado.getContent()
-                        .stream()
-                        .map(pedido -> {
-                            PedidoPesquisaDTO dto = mapper.toDTO(pedido);
-                            dto.setDepartamento(pedido.getUsuario().getDepartamento());
-                            dto.setNomeUsuario(pedido.getUsuario().getLogin());
-                            dto.setDataFormatada(pedido.getData().format(formatador));
-                            return dto;
-                        })
-                        .toList();
-
+        .stream()
+        .map(pedido -> {
+            PedidoPesquisaDTO dto = mapper.toDTO(pedido);
+            dto.setDepartamento(pedido.getUsuario().getDepartamento());
+            dto.setNomeUsuario(pedido.getUsuario().getLogin());
+            dto.setDataFormatada(pedido.getData().format(formatador));
+            return dto;
+        })
+        .toList();
+        
         model.addAttribute("pedidos", resultado);
+        model.addAttribute("currentPage", "pedido");
 
         return "pages/lista-pedidos";
     }
