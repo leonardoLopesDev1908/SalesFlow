@@ -33,7 +33,6 @@
                             <button type="submit">Atualizar</button>
                         </form>
                     </div>
-
                     <canvas id="graficoVendas"></canvas>
                 </div>
             </div>
@@ -51,6 +50,20 @@
                         data: valores,
                         backgroundColor: 'rgba(82, 173, 82, 0.5)'
                     }]
+                },
+                    options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    if (Number.isInteger(value)) {
+                                        return value;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             });
         </script>
