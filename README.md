@@ -12,7 +12,15 @@
 - **Cadastros**
   - CRUD completo de clientes, produtos, fornecedores, notas fiscais e pedidos
   - Filtros e buscas por nome, CNPJ, produto etc.
+
+Pesquisa de Produtos com Specs
+<img width="1745" height="835" alt="Captura de tela 2025-08-20 130341" src="https://github.com/user-attachments/assets/1888474c-ed09-42b9-8756-7e9613f9f625" />
+
+Solicitação de pedidos (simulação de departamento solicitando materiais de trabalho)
 <img width="1915" height="937" alt="Captura de tela 2025-08-22 184252" src="https://github.com/user-attachments/assets/3440b93b-a618-4a78-9a64-3747e30243f3" />
+
+Gerenciar de pedido para usuário com Authority 'GERENTE'
+<img width="1915" height="934" alt="Captura de tela 2025-08-22 184309" src="https://github.com/user-attachments/assets/3575b600-de49-4e14-87a0-ca8aee799eb2" />
 
 - **Relatórios Inteligentes**
   - Quais clientes mais compram
